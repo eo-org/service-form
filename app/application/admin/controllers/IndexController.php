@@ -54,6 +54,11 @@ class Admin_IndexController extends Zend_Controller_Action
         $this->_helper->template->actionMenu(array('create'));
 	}
 	
+	public function createAction()
+	{
+		$this->_forward('edit');
+	}
+	
 	public function editAction()
 	{
 		$formDoc = $this->_getResource();

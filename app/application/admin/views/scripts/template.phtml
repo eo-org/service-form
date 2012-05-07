@@ -16,38 +16,35 @@ $request = Zend_Controller_Front::getInstance()->getRequest();
 
 <body>
 	<?php echo $this->extension('Navi', $naviArr) ?>
-
-	<div id='admin_main_frame'>
-		<div class='desc'>
-			<div class='head'>
-				<?php echo $this->head?>
-			</div>
-		</div>
-		
-		<?php echo $this->extension('ActionMenu', $this->actionMenu) ?>
-		
-		<div class='flash-message'>
-		<?php 
-			$messenger = new Zend_Controller_Action_Helper_FlashMessenger();
-			$messages = $messenger->getMessages();
-			if(count($messages) > 0) {
-		?>
-			<div class='brick-admin-flash-message'>
-		<?php	
-				foreach($messages as $m) {
-					echo "<div>".$m."</div>";
-				}
-		?>
-			</div>
-		<?php
-			}
-		?>
-		</div>
-		
-		<div class='under-desc'>
-			<?=$this->layout()->content ?>
-		</div>
+	
+	<div class='head-desc'>
+		<?php echo $this->head?>
 	</div>
+	
+	<?php echo $this->extension('ActionMenu', $this->actionMenu) ?>
+	
+	<div class='flash-message'>
+	<?php 
+		$messenger = new Zend_Controller_Action_Helper_FlashMessenger();
+		$messages = $messenger->getMessages();
+		if(count($messages) > 0) {
+	?>
+		<div class='brick-admin-flash-message'>
+	<?php	
+			foreach($messages as $m) {
+				echo "<div>".$m."</div>";
+			}
+	?>
+		</div>
+	<?php
+		}
+	?>
+	</div>
+	
+	<div id='admin_main_frame'>
+		<?=$this->layout()->content ?>
+	</div>
+	
 	<div class='footer'>
 		<hr />
 		<div class='power'>
