@@ -1,0 +1,27 @@
+<div class='element-library'>
+	<div class='element-library-item drag-handle' draggable='true' element-type='text'>
+		输入框
+	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='select'>
+		单选框
+	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='multi-checkbox'>
+		复选框
+	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='textarea'>
+		文本域
+	</div>
+</div>
+<div class='element-current' style='min-height: 350px;'>
+	<ul class='form-editor'>
+		<li class='drag-dropable'></li>
+	<?php
+	foreach($this->formElementList as $row) {
+		echo $row->toLi();
+		echo "<li class='drag-dropable'></li>";
+	}
+	?>
+	</ul>
+</div>
+
+<div class='clear'></div>

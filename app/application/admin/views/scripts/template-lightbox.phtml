@@ -1,0 +1,19 @@
+<div class='admin_main_frame'>
+	<div class='desc'><div class='head'><?php echo $this->head?></div></div>
+
+	<div class='lightbox-control'>
+		<?php
+		$actionMenu = App_Brick_Controller::createFixedBrick('Admin_ActionMenu');
+		$actionMenu->setMenu($this->actionMenu);
+		echo $actionMenu->render();
+		?>
+	</div>
+	
+	<div class='lightbox-flash-message'>
+		<ul class='error-message'></ul>
+	</div>
+	
+	<div class='under-desc'>
+		<?=$this->layout()->content ?>
+	</div>
+</div>
