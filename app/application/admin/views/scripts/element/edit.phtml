@@ -1,1 +1,80 @@
-<?php echo $this->form ?>
+<?php $row = $this->row->toArray();?>
+<div><a class="action-menu" id="updateElementSetting" href="">保存设定</a>
+   <a class="action-menu" id="delElementSetting" href="">删除</a></div>
+  <table width="45%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td width="32%" height="40" align="right">标题：<input type="hidden" id="elementid" value="<?php echo $this->elementid;?>"/></td>
+      <td width="68%"><input type="text" name="label" id="label" value="<?php echo $row['label'];?>" /></td>
+    </tr>
+    <tr>
+      <td height="40" align="right">必填：</td>
+      <td><select name="select" id="required">
+        <option <?php if($row['required']==1){echo "selected='selected'";}?> value='1'>是</option>
+        <option <?php if($row['required']==0){echo "selected='selected'";}?> value='0'>否</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
+      <td height="40" align="right">标题描述：</td>
+      <td><textarea name="desc" id="desc" cols="30" rows="3"><?php echo $row['desc'];?></textarea></td>
+    </tr>
+    <tr>
+      <td height="40" colspan="2" align="center"><?php if(!empty($row['option'])) { ?><div id='xxxg'>选项修改&nbsp;<input id='addtable'type="button" value="添加" /></div>
+		<div id='addt'>
+		<?php $i=0;?>
+		<?php foreach($row['option'] as $num => $option){?>
+			<div id='<?php echo 's'.$i;?>' style="text-align:center">
+				<span><input type="text" id='<?php echo 's'.$i;?>' value="<?php echo $option;?>" name='<?php echo 's'.$i;?>' /></span>
+				<span><input id='deloption' type='button' value='删除' did='<?php echo 's'.$i;?>'></span>
+			</div>
+		<?php $i++;}}?>
+		</div>
+	 </td>
+    </tr>
+  </table>
+<script type="text/javascript">
+var i=5;
+$('#addtable').click(function(){
+	i++;
+	var aa="<div id=s"+i+"><span><input type='text' id=s"+i+" value=''/></span>&nbsp;<span><input id='deloption' type='button' value='删除' did=s"+i+"></span></div>";
+	$("#addt").append(unescape(aa));
+});
+$('#deloption').live("click",function(){
+	var s = $(this).attr("did");
+	$("#"+s).remove();
+});
+$('#updateElementSetting').click(function(){
+	var attrValue="";
+	<?php if(!empty($row['option'])) { ?>
+		$("#addt :input:text").each(function(){
+			var value = $(this).attr("value");
+			attrValue+= value + ':';
+		});
+	<?php } else { ?>
+		attrValue = '0';
+	<?php }?>
+	var elementid = $('#elementid').val();
+	var label = $('#label').val();
+	var desc = $('#desc').val();
+	var required = $("#required  option:selected").val();
+	$.ajax({
+		type: "POST",
+		url: '/admin/element/edit/id/'+elementid+'/label/'+label+'/required/'+required+'/desc/'+desc+'/option/'+attrValue,
+		success: function(obj) {
+			location.href = "/admin/form/edit/id/<?php echo $row['formId'];?>";
+		}
+	});
+	return false;
+});
+$('#delElementSetting').click(function(){
+	$.ajax({
+		type: "POST",
+		url: '/admin/element/delete/id/<?php echo $this->elementid;?>',
+		success: function(obj) {
+			location.href = "/admin/form/edit/id/<?php echo $row['formId'];?>";
+		}
+	});
+	return false;
+});
+</script>
+

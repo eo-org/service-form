@@ -4,77 +4,56 @@ class Admin_ElementController extends Zend_Controller_Action
 	protected function _getResource()
 	{
 		$elementId = $this->getRequest()->getParam('id');
-		$tb = App_Factory::_('Element');
-		$row = $tb->fetchRow($tb->select()->where('id = ?', $elementId));
-		return $row;
+		//echo $elementId."<br>";
+		$formCo = App_Factory::_m('Form');
+		$formDoc = $formCo->find($elementId);
+		//Zend_Debug::dump($formDoc);exit;
+		return $formDoc;
 	}
-	
+
 	public function indexAction()
 	{
-		
+
 	}
-		
+
 	public function editAction()
 	{
-		$row = $this->_getResource();
-		$form = $row->getEditForm();
-		//如果是单选框或者是多选框就把他们的下属选项在页面上显示出来
-		if(strtolower($row['elementType']) == 'select' || $row['elementType'] == 'MultiCheckbox')
-		{	
-
-			$rowoption = $row->getOptions();
-			$this->view->rowoption = $rowoption;
-		}
+		$elementId = $this->getRequest()->getParam('id');
+		$formCo = App_Factory::_m('Element');
+		$row = $formCo->find($elementId);
 		if($this->getRequest()->isPost()) {
-			if($form->isValid($this->getRequest()->getParams())) {
-				$row->setFromArray($form->getValues());
-				$row->save();
-				/* 获取下属表单修改的内容 $sjid是指修改的内容属于哪一下级 $val是修改的内容*/
-				$sjid = $this->getRequest()->getParam('sjid');
-
-				$optionval = $this->getRequest()->getParam('val');
-
-				if(!empty($optionval)){
-
-					$indb = App_Factory::_('Element_Option');
-
-					$where = "elementId = ".$sjid;
-
-					$indb->delete($where);
-
-					$arrbox = explode(":", $optionval);
-
-					for($i=0;$i<count($arrbox)-1;$i++){
-
-						$arrin = array(
-
-								'elementId' => $sjid,
-
-								'label' => $arrbox[$i]
-
-						);
-
-						$indb->insert($arrin);//保存现有的新数据
-
-					}
-
-				}
-				/*结束*/
-				$row->clearOption();
-				$this->_helper->json(array('result' => 'success', 'html' => $row->toLi()));
+			$label = $this->getRequest()->getParam('label');
+			$required = $this->getRequest()->getParam('required');
+			$desc = $this->getRequest()->getParam('desc');
+			$optionval = $this->getRequest()->getParam('option');
+			$arroption = array();
+			if($optionval == '0'){
+				$row->setFromArray(array('desc'=>$desc,'required'=>$required,'label'=>$label));
 			} else {
-				$this->_helper->json(array('result' => 'fail', 'html' => $form->getMessages()));
+
+				$arrbox = explode(":", $optionval);
+				$arroption = array();
+				for($i=0;$i<count($arrbox)-1;$i++){
+					$arroption[] = $arrbox[$i];
+				}
+				$row->setFromArray(array('option'=>$arroption,'desc'=>$desc,'required'=>$required,'label'=>$label));
 			}
-		} 
+			$row->save();
+			//$this->_forward('edit','index','admin',array('id'=>$formid));
+			//$this->_redirect('/admin/form/edit/id/'.$formid);
+		}
 		$this->view->row = $row;
-		$this->view->form = $form;
-		$this->view->rowid = $row['id'];
-		$this->_helper->template->actionMenu(array(
-			array('label' => '保存设定', 'href' => '/admin/element/edit/id/'.$row->id, 'method' => 'updateElementSetting'),
-			array('label' => '删除', 'href' => '/admin/element/delete/id/'.$row->id, 'method' => 'delElementSetting')
-		));
+		$this->view->elementid = $elementId;
 	}
-	
+
+	public function editbuttonAction()
+	{
+		$elementId = $this->getRequest()->getParam('id');
+		$formCo = App_Factory::_m('Element');
+		$row = $formCo->find($elementId);
+		$this->view->row = $row;
+		$this->view->elementid = $elementId;
+	}
 	public function intableAction($ttype,$formid)
 	{
 		$tb = App_Factory::_('Element');
@@ -117,13 +96,13 @@ class Admin_ElementController extends Zend_Controller_Action
 		}
 		return $arrrow;
 	}
-	
+
 	public function deleteAction()
 	{
-		$row = $this->_getResource();
-		$id = $row->delOption();
-
- 		$this->_helper->json(array('result' => 'success', 'html' => $id));
+		$elementId = $this->getRequest()->getParam('id');
+		$formCo = App_Factory::_m('Element');
+		$row = $formCo->find($elementId);
+		$row->delete();
 		exit;
 	}
 }

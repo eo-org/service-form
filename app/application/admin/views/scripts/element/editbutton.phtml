@@ -1,0 +1,18 @@
+<?php $row = $this->row->toArray();?>
+<div><a class="action-menu" id="updateElementSetting" href="">保存设定</a>
+   <a class="action-menu" id="delElementSetting" href="">删除</a></div>
+<table width="45%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td width="32%" height="40" align="right">标题：<input type="hidden" id="elementid" value="<?php echo $this->elementid;?>"/></td>
+      <td width="68%"><input type="text" name="label" id="label" value="<?php echo $row['label'];?>" /></td>
+    </tr>
+    <tr>
+      <td height="40" align="right">类型：</td>
+      <td><select name="select" id="type">
+        <option <?php if($row['type']=='submit'){echo "selected='selected'";}?> value='submit'>Submit</option>
+        <option <?php if($row['type']=='reset'){echo "selected='selected'";}?> value='reset'>Reset</option>
+        <option <?php if($row['type']=='button'){echo "selected='selected'";}?> value='button'>Button</option>
+      </select>
+      </td>
+    </tr>
+ </table>

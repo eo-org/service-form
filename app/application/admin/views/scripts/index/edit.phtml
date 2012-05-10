@@ -12,11 +12,13 @@
 		文本域
 	</div>
 </div>
+  <input type="hidden" id="formname" name="formname" value="<?php echo $this->formid;?>"/>
 <div class='element-current' style='min-height: 350px;'>
 	<ul class='form-editor'>
 		<li class='element-dropable'></li>
 	<?php
 	foreach($this->formElementList as $row) {
+		var_export($row);
 		echo $row->toLi();
 		echo "<li class='drag-dropable'></li>";
 	}

@@ -11,14 +11,44 @@
 	<div class='element-library-item drag-handle' draggable='true' element-type='textarea'>
 		文本域
 	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='button'>
+		按钮
+	</div>
 </div>
+  <input type="hidden" id="formname" name="formname" value="<?php echo $this->formid;?>"/>
 <div class='element-current' style='min-height: 350px;'>
 	<ul class='form-editor'>
-		<li class='drag-dropable'></li>
+		<li class='element-dropable'></li>
 	<?php
 	foreach($this->formElementList as $row) {
-		echo $row->toLi();
-		echo "<li class='drag-dropable'></li>";
+		$html = "<li id='form_element_".$row['_id']."' class='solid drag-handle' draggable='true'><div class='element-label'>";
+		if($row['elementType'] != 'button'){
+			$html.= "<a draggable='false' class='lightbox-trigger' href='/admin/element/edit/id/".$row['_id']."'>".$row['label']."</a></div><div class='element'>";
+			switch($row['elementType']) {
+				case 'text':
+					$html.= "<input type='text' disabled='disabled'>";
+					break;
+				case 'textarea':
+					$html.= "<textarea disabled='disabled'></textarea>";
+					break;
+				case 'select':
+					foreach($row['option'] as $arrone){
+						$html.= "<input type='radio' disabled='disabled' name='' value=''><label>".$arrone."</label>";
+					}
+					break;
+				case 'multi-checkbox':
+					foreach($row['option'] as $arrone){
+						$html.= "<input type='checkbox' disabled='disabled' name='' value=''><label>".$arrone."</label>";
+					}
+					break;
+			}
+			$html.= "</div><div class='element-desc'>".$row['desc']."</div><div class='element-controller'></div>";
+		} else {
+			$html.= "<a draggable='false' class='lightbox-trigger' href='/admin/element/editbutton/id/".$row['_id']."'>";
+			$html.="<input type='submit' name='button' id='button' value='".$row['label']."' /></a></div><div class='element'>";
+		}
+		echo $html;
+		echo "</li><li class='drag-dropable'></li><li class='element-dropable'></li>";
 	}
 	?>
 	</ul>
