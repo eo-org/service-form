@@ -14,20 +14,20 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$mongoDb = new App_Mongo_Db_Adapter('service-form');
 		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
 	}
-	
-	protected function _initDb()
-	{
-		$db = new Zend_Db_Adapter_Pdo_Mysql(array(
-			'host' => 'localhost',
-			'username' => 'root',
-			'password' => 'root',
-			'dbname' => 'form',
-			'adapter' => 'mysqli',
-			'charset' => 'UTF8'
-		));
-		Zend_Registry::set('db', $db);
-		Zend_Db_Table::setDefaultAdapter($db);
-	}
+//	
+//	protected function _initDb()
+//	{
+//		$db = new Zend_Db_Adapter_Pdo_Mysql(array(
+//			'host' => 'localhost',
+//			'username' => 'root',
+//			'password' => 'root',
+//			'dbname' => 'form',
+//			'adapter' => 'mysqli',
+//			'charset' => 'UTF8'
+//		));
+//		Zend_Registry::set('db', $db);
+//		Zend_Db_Table::setDefaultAdapter($db);
+//	}
 	
 	protected function _initSession()
 	{
@@ -45,14 +45,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         	'admin' => APP_PATH.'/admin/controllers',
             'rest' => APP_PATH.'/rest/controllers')
         );
+        $csu = Class_Session_User::getInstance();
+		$controller->registerPlugin(new App_Plugin_BackendSsoAuth(
+        	$csu,
+        	App_Plugin_BackendSsoAuth::SERVICE_FILE,
+        	Class_Server::API_KEY
+        ));
         
         $controller->throwExceptions(true);
         Zend_Layout::startMvc();
         $layout = Zend_Layout::getMvcInstance();
         $layout->setLayout('template');
-//        $controller->registerPlugin(new App_Plugin_LayoutSwitch($layout, array('admin')));
-
-        //add view helper path
+        
         $view = Zend_Layout::getMvcInstance()->getView();
         $view->addHelperPath(APP_PATH.'/helpers','Helper');
         
@@ -62,6 +66,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
     	$controller = Zend_Controller_Front::getInstance();
     	$router = $controller->getRouter();
+    	$defaultRoute = new Zend_Controller_Router_Route(
+			':orgCode/:module/:controller/:action/*',
+			array(
+				'orgCode'    => 'demo',
+				'module'     => 'default',
+				'controller' => 'index',
+				'action'     => 'index'
+			),
+			array('account' => '([a-z0-9]+)')
+		);
+		$router->addRoute('default', $defaultRoute);
         $router->addRoute('rest', new Zend_Rest_Route($controller, array(), array('rest')));
+        unset($router);
     }
 }
