@@ -51,6 +51,12 @@ class Admin_ElementController extends Zend_Controller_Action
 		$elementId = $this->getRequest()->getParam('id');
 		$formCo = App_Factory::_m('Element');
 		$row = $formCo->find($elementId);
+		if($this->getRequest()->isPost()) {
+			$label = $this->getRequest()->getParam('label');
+			$type = $this->getRequest()->getParam('type');
+			$row->setFromArray(array('type'=>$type,'label'=>$label));
+			$row->save();
+		}
 		$this->view->row = $row;
 		$this->view->elementid = $elementId;
 	}

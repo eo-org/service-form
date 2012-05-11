@@ -22,12 +22,15 @@ $(document).ready(function() {
 //			} else {
 				from+= "<form id='fillform' action='"+httpurl+"rest/feedback/"+obj+"' method='post'><div class='element-current'><ul class='form-editor'>";
 				$.each(json, function(k, data){
-					from+= "<li draggable='true' class='solid drag-handle' id='form_element_"+data._id+"'><div class='element-label'>"+data.label;
-					if(data.required == 1){
-						from+="<font color='#f00'>(必填)</font>";
+					from+= "<li draggable='true' class='solid drag-handle' id='form_element_"+data._id+"'>";
+					if(data.elementType != 'button') {
+						from+= "<div class='element-label'>"+data.label;
+						if(data.required == 1){
+							from+="<font color='#f00'>(必填)</font>";
+						}
+	//					from+= "</div><div class='element'><input type='hidden' id='userid' name='userid' value='"+userid+"'>";
+						from+= "</div><div class='element'>";
 					}
-//					from+= "</div><div class='element'><input type='hidden' id='userid' name='userid' value='"+userid+"'>";
-					from+= "</div><div class='element'>";
 					if (data.elementType == 'text') {
 						from+= "<input type='text' id='option' name='"+data.label+"'>";
 					} else if(data.elementType == 'radio' || data.elementType == 'select') {
@@ -41,9 +44,13 @@ $(document).ready(function() {
 							from+= "<input id='option_"+k+"' type='checkbox' value='"+j+"' name='"+data.label+"_"+j+"_"+val+"'><label for='option_"+j+"'>"+val+"</label>";
 						});
 					}
-					from+="</div><div class='element-desc'>"+data.desc+"</div></li>";
+					if(data.elementType != 'button') {
+						from+="</div><div class='element-desc'>"+data.desc+"</div></li>";
+					} else {
+						from+="<input type='"+data.type+"' name='button' id='button' value='"+data.label+"' /></li>";
+					}
 				});
-				from+="<input type='submit' name='button' id='button' value='提交' /><input type='reset' name='button2' id='button2' value='重置' />";
+//				from+="<input type='submit' name='button' id='button' value='提交' /><input type='reset' name='button2' id='button2' value='重置' />";
 				from+="</ul></div></form>";
 //			}
 			$('#detailform').html(from);

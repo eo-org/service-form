@@ -8,7 +8,7 @@
     </tr>
     <tr>
       <td height="40" align="right">类型：</td>
-      <td><select name="select" id="type">
+      <td><select name="type" id="type">
         <option <?php if($row['type']=='submit'){echo "selected='selected'";}?> value='submit'>Submit</option>
         <option <?php if($row['type']=='reset'){echo "selected='selected'";}?> value='reset'>Reset</option>
         <option <?php if($row['type']=='button'){echo "selected='selected'";}?> value='button'>Button</option>
@@ -16,3 +16,28 @@
       </td>
     </tr>
  </table>
+ <script type="text/javascript">
+ $('#updateElementSetting').click(function(){
+	var elementid = $('#elementid').val();
+	var label = $('#label').val();
+	var type = $("#type  option:selected").val();
+	$.ajax({
+		type: "POST",
+		url: '/admin/element/editbutton/id/'+elementid+'/label/'+label+'/type/'+type,
+		success: function(obj) {
+			location.href = "/admin/form/edit/id/<?php echo $row['formId'];?>";
+		}
+	});
+	return false;
+});
+$('#delElementSetting').click(function(){
+	$.ajax({
+		type: "POST",
+		url: '/admin/element/delete/id/<?php echo $this->elementid;?>',
+		success: function(obj) {
+			location.href = "/admin/form/edit/id/<?php echo $row['formId'];?>";
+		}
+	});
+	return false;
+});
+</script>
