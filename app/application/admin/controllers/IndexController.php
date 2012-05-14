@@ -26,7 +26,6 @@ class Admin_IndexController extends Zend_Controller_Action
 	public function indexAction()
 	{
 		$this->_helper->template->head('表单列表');
-		$orgcode = $this->getRequest()->getParam('orgcode');
         $hashParam = $this->getRequest()->getParam('hashParam');
         $labels = array(
 			'formName' => '表单标题',
@@ -38,13 +37,13 @@ class Admin_IndexController extends Zend_Controller_Action
 				'id' => null,
 				'desc' => null
 			),
-			'url' => '/admin/form/get-form-json/orgcode/'.$orgcode.'/',
+			'url' => '/'.Class_Server::getOrgCode().'/admin/form/get-form-json/',
 			'actionId' => 'id',
 			'click' => array(
 				'action' => 'contextMenu',
 				'menuItems' => array(
-					array('编辑', '/admin/form/edit/id/'),
-					array('删除', '/admin/form/delete/orgcode/'.$orgcode.'/id/')
+					array('编辑', '/'.Class_Server::getOrgCode().'/admin/form/edit/id/'),
+					array('删除', '/'.Class_Server::getOrgCode().'/admin/form/delete/id/')
 				)
 			),
 			'initSelectRun' => 'true',
@@ -57,32 +56,17 @@ class Admin_IndexController extends Zend_Controller_Action
 
 	public function createAction()
 	{
-//		$formCo = App_Factory::_m('Form');
-//		$formDoc = $formCo->addFilter('name', 'fine')
-//			->fetchAll();
-//		foreach($formDoc as $f) {
-//			Zend_Debug::dump($f);
-//		}
-//		find('4fa88a0ff26407100d000007');
-//		Zend_Debug::dump($formDoc);
-//		echo $formDoc->getId();
-//		echo "<br />";
-//		echo $formDoc->abc;
-//		$formDoc->setFromArray(array('name' => 'fine', 'label' => '很好'));
-//		$formDoc->save();
-// 		$this->_forward('edit');
-//		$form= $this->getRequest()->getParams();
-//		var_export($form);
-		$orgcode = $this->getRequest()->getParam('orgcode');
+		$orgCode = Class_Server::getOrgCode();
 		$formname = $this->getRequest()->getParam('formname');
-		if($this->getRequest()->isPost()){
+		
+		if($this->getRequest()->isPost()) {
 			$formCo = App_Factory::_m('Form');
-			$formDoc = $formCo->addFilter('formName', $formname)->addFilter('orgCode', $orgcode)->fetchOne();
+			$formDoc = $formCo->addFilter('formName', $formname)->addFilter('orgCode', $orgCode)->fetchOne();
 			if(empty($formDoc)) {
 				$formDoc = $formCo->create();
-				$formDoc->setFromArray(array('formName' => $formname,'orgCode' => $orgcode));
+				$formDoc->setFromArray(array('formName' => $formname,'orgCode' => $orgCode));
 				$formDoc->save();
-				$this->_forward('edit','index','admin',array('id'=>$formDoc->getId()));
+				$this->_helper->redirector()->gotoSimple('index');
 			} else {
 				$this->view->message = '该表单名称已存在，请重新输入！';
 			}

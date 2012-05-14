@@ -1,11 +1,12 @@
 <?php
 $naviArr = array(
 	array(
+		'orgCode' => Class_Server::getOrgCode(),
 		'title' => '表单管理'
 	)
 );
 
-$request = Zend_Controller_Front::getInstance()->getRequest();
+//$request = Zend_Controller_Front::getInstance()->getRequest();
 ?>
 
 <?=$this->doctype() ?>

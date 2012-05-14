@@ -106,10 +106,11 @@ class Admin_FormController extends Zend_Controller_Action
     {
         $pageSize = 20;
         $currentPage = 1;
-		$orgcode = $this->getRequest()->getParam('orgcode');
+        
 	    $formCo = App_Factory::_m('Form');
 	   // $formCo->setField(array('formName'));
-	   $formCo->addFilter("orgCode", $orgcode);
+		$formCo->addFilter("orgCode", Class_Server::getOrgCode());
+		
         $result = array();
         foreach($this->getRequest()->getParams() as $key => $value) {
             if(substr($key, 0 , 7) == 'filter_') {
@@ -142,7 +143,6 @@ class Admin_FormController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-    	$orgcode = $this->getRequest()->getParam('orgcode');
 		$formid = $this->getRequest()->getParam('id');
 		$formCo = App_Factory::_m('Form');
 		$row = $formCo->find($formid);
@@ -153,8 +153,8 @@ class Admin_FormController extends Zend_Controller_Action
 			$optionDoc = $elementCo->addFilter("_id", $num['_id'])->fetchOne();
 			$optionDoc->delete();
 		}
-//		$this->_forward('index','index','admin',array('orgcode'=>$orgcode));
-		$this->_redirect('/admin/index/index/orgcode/'.$orgcode);
+		
+		$this->_helper->redirector()->gotoSimple('index');
 		exit;
 
     }

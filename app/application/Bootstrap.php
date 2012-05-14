@@ -7,11 +7,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$autoloader->registerNamespace('Class_');
 		$autoloader->registerNamespace('Twig_');
 		$autoloader->registerNamespace('App_');
+		
+		Class_Server::config();
 	}
 	
 	protected function _initMongoDb()
 	{
-		$mongoDb = new App_Mongo_Db_Adapter('service-form');
+		$mongoDb = new App_Mongo_Db_Adapter('service-file', Class_Server::getMongoServer());
 		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
 	}
 //	
@@ -36,8 +38,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
     protected function _initController()
     {
-    	Class_Server::config();
-    	
     	Zend_Controller_Action_HelperBroker::addPath(APP_PATH.'/helpers', 'Helper');
         $controller = Zend_Controller_Front::getInstance();
         $controller->setControllerDirectory(array(
@@ -45,10 +45,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         	'admin' => APP_PATH.'/admin/controllers',
             'rest' => APP_PATH.'/rest/controllers')
         );
+        
         $csu = Class_Session_User::getInstance();
 		$controller->registerPlugin(new App_Plugin_BackendSsoAuth(
         	$csu,
-        	App_Plugin_BackendSsoAuth::SERVICE_FILE,
+        	App_Plugin_BackendSsoAuth::SERVICE_FORM,
         	Class_Server::API_KEY
         ));
         
@@ -59,7 +60,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         
         $view = Zend_Layout::getMvcInstance()->getView();
         $view->addHelperPath(APP_PATH.'/helpers','Helper');
-        
     }
     
     protected function _initRouter()
@@ -69,7 +69,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	$defaultRoute = new Zend_Controller_Router_Route(
 			':orgCode/:module/:controller/:action/*',
 			array(
-				'orgCode'    => 'demo',
+				'orgCode'    => Class_Server::getOrgCode(),
 				'module'     => 'default',
 				'controller' => 'index',
 				'action'     => 'index'

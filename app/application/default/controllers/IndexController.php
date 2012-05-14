@@ -3,12 +3,12 @@ class IndexController extends Zend_Controller_Action
 {
 	public function indexAction()
 	{
-		$formid = $this->getRequest()->getParam('id');
-		$elTb = App_Factory::_('Element');
-		$elRowset = $elTb->fetchAll($elTb->select()->where('formId = ?', $formid));
-		
-		$this->view->formid = $formid;
-		$this->view->elRowset = $elRowset;
+//		$formid = $this->getRequest()->getParam('id');
+//		$elTb = App_Factory::_('Element');
+//		$elRowset = $elTb->fetchAll($elTb->select()->where('formId = ?', $formid));
+//		
+//		$this->view->formid = $formid;
+//		$this->view->elRowset = $elRowset;
 	}
 	
 	public function saveAction()
