@@ -59,9 +59,9 @@ $('#updateElementSetting').click(function(){
 	var required = $("#required  option:selected").val();
 	$.ajax({
 		type: "POST",
-		url: '/admin/element/edit/id/'+elementid+'/label/'+label+'/required/'+required+'/desc/'+desc+'/option/'+attrValue,
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/element/edit/id/'+elementid+'/label/'+label+'/required/'+required+'/desc/'+desc+'/option/'+attrValue,
 		success: function(obj) {
-			location.href = "/admin/form/edit/id/<?php echo $row['formId'];?>";
+			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin/form/edit/id/<?php echo $row['formId'];?>";
 		}
 	});
 	return false;
@@ -69,9 +69,9 @@ $('#updateElementSetting').click(function(){
 $('#delElementSetting').click(function(){
 	$.ajax({
 		type: "POST",
-		url: '/admin/element/delete/id/<?php echo $this->elementid;?>',
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/element/delete/id/<?php echo $this->elementid;?>',
 		success: function(obj) {
-			location.href = "/admin/form/edit/id/<?php echo $row['formId'];?>";
+			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin/form/edit/id/<?php echo $row['formId'];?>";
 		}
 	});
 	return false;

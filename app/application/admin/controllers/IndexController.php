@@ -49,7 +49,6 @@ class Admin_IndexController extends Zend_Controller_Action
 			'initSelectRun' => 'true',
 			'hashParam' => $hashParam
 		));
-
         $this->view->partialHTML = $partialHTML;
         $this->_helper->template->actionMenu(array('create'));
 	}
@@ -110,7 +109,7 @@ class Admin_IndexController extends Zend_Controller_Action
 
 	    $formCo = App_Factory::_m('Form');
 	    $formCo->setField(array('label'));
-
+		
         $result = array();
         foreach($this->getRequest()->getParams() as $key => $value) {
             if(substr($key, 0 , 7) == 'filter_') {
@@ -141,7 +140,7 @@ class Admin_IndexController extends Zend_Controller_Action
         return $this->_helper->json($result);
     }
 
-	public function selformAction()
+	public function showformAction()
 	{
 		$callback = $this->getRequest()->getParam('callback');
 		$formid = $this->getRequest()->getParam('id');

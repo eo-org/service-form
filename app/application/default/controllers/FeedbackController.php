@@ -1,5 +1,5 @@
 <?php
-class Rest_FeedbackController extends Zend_Rest_Controller
+class FeedbackController extends Zend_Controller_Action
 {
 	public function init()
     {
@@ -39,12 +39,9 @@ class Rest_FeedbackController extends Zend_Rest_Controller
 	{
 		$formCo = App_Factory::_m('Content');
 		$val = $this->getRequest()->getParams();
-// 		Zend_Debug::dump($val);
-// 		$httpurl =  $_SERVER["HTTP_REFERER"];
 		$arrin = array();
 		foreach ($val as $num => $arrone){
 			if($num != 'module' && $num != 'controller' && $num != 'action' && $num != 'button' && $num != 'id'){
-				//echo $num."<br>".$arrone."<br>";
 				$arrid = explode("_",$num);
 				if(isset($arrid[1])){
 					if(isset($arrid[2])){
@@ -58,12 +55,14 @@ class Rest_FeedbackController extends Zend_Rest_Controller
 			}
 		}
 		$arrin['formId'] = $val['id'];
-// 		var_export($arrin);
 		$formDoc = $formCo->create();
 		$formDoc->setFromArray($arrin);
 		$formDoc->save();
 		$this->_helper->viewRenderer->setNoRender(true);
-// 		echo "<script language='javascript'>location.href='".$httpurl."'</script>";
+		echo "<script language='javascript' type='text/javascript'>";
+		echo "alert('您的问题我们已收到，谢谢您对本公司的支持！');";
+		echo "window.location.href=' http://test.eo.test/form.php'";
+		echo "</script>";
 		exit;
 	}
 	

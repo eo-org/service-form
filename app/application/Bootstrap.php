@@ -13,7 +13,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
 	protected function _initMongoDb()
 	{
-		$mongoDb = new App_Mongo_Db_Adapter('service-file', Class_Server::getMongoServer());
+		$mongoDb = new App_Mongo_Db_Adapter('service-form', Class_Server::getMongoServer());
 		App_Mongo_Db_Collection::setDefaultAdapter($mongoDb);
 	}
 //	
@@ -77,7 +77,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			array('account' => '([a-z0-9]+)')
 		);
 		$router->addRoute('default', $defaultRoute);
-        $router->addRoute('rest', new Zend_Rest_Route($controller, array(), array('rest')));
+//         $router->addRoute('rest', new Zend_Rest_Route($controller, array(), array('rest')));
         unset($router);
     }
 }

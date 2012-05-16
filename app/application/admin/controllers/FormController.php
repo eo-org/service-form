@@ -60,11 +60,13 @@ class Admin_FormController extends Zend_Controller_Action
 	public function editAction()
 	{
 		$formid = $this->getRequest()->getParam('id');
+		echo $formid;
 		$formCo = App_Factory::_m('Element');
 		$formDoc = $formCo->addFilter("formId", $formid)->fetchAll();
+		
 		$this->view->formElementList = $formDoc;
 		$this->view->formid = $formid;
-		$this->_helper->template->actionMenu(array('save', 'delete'));
+		$this->_helper->template->actionMenu(array('save'));
 	}
 
 	public function getElementTemplateAction()
@@ -106,7 +108,6 @@ class Admin_FormController extends Zend_Controller_Action
     {
         $pageSize = 20;
         $currentPage = 1;
-        
 	    $formCo = App_Factory::_m('Form');
 	   // $formCo->setField(array('formName'));
 		$formCo->addFilter("orgCode", Class_Server::getOrgCode());
@@ -129,10 +130,11 @@ class Admin_FormController extends Zend_Controller_Action
             }
         }
 
-        $formCo->setPage($currentPage)->setPageSize($pageSize);
+        //$formCo->setPage($currentPage)->setPageSize($pageSize);
 		$data = $formCo->fetchAll(true);
+		
 		$dataSize = $formCo->count();
-
+		
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
         $result['pageSize'] = $pageSize;

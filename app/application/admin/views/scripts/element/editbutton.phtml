@@ -23,9 +23,9 @@
 	var type = $("#type  option:selected").val();
 	$.ajax({
 		type: "POST",
-		url: '/admin/element/editbutton/id/'+elementid+'/label/'+label+'/type/'+type,
+		url: '/<?php echo Class_Server::getOrgCode()?>/admin/element/editbutton/id/'+elementid+'/label/'+label+'/type/'+type,
 		success: function(obj) {
-			location.href = "/admin/form/edit/id/<?php echo $row['formId'];?>";
+			location.href = "/<?php echo Class_Server::getOrgCode()?>/admin/form/edit/id/<?php echo $row['formId'];?>";
 		}
 	});
 	return false;
@@ -33,9 +33,9 @@
 $('#delElementSetting').click(function(){
 	$.ajax({
 		type: "POST",
-		url: '/admin/element/delete/id/<?php echo $this->elementid;?>',
+		url: '/<?php echo Class_Server::getOrgCode()?>/admin/element/delete/id/<?php echo $this->elementid;?>',
 		success: function(obj) {
-			location.href = "/admin/form/edit/id/<?php echo $row['formId'];?>";
+			location.href = "/<?php echo Class_Server::getOrgCode()?>/admin/form/edit/id/<?php echo $row['formId'];?>";
 		}
 	});
 	return false;

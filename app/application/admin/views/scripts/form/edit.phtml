@@ -16,6 +16,7 @@
 	</div>
 </div>
   <input type="hidden" id="formname" name="formname" value="<?php echo $this->formid;?>"/>
+  <input type="hidden" id="orgcode" name="orgcode" value="<?php echo Class_Server::getOrgCode()?>"/>
 <div class='element-current' style='min-height: 350px;'>
 	<ul class='form-editor'>
 		<li class='element-dropable'></li>
@@ -23,7 +24,7 @@
 	foreach($this->formElementList as $row) {
 		$html = "<li id='form_element_".$row['_id']."' class='solid drag-handle' draggable='true'><div class='element-label'>";
 		if($row['elementType'] != 'button'){
-			$html.= "<a draggable='false' class='lightbox-trigger' href='/admin/element/edit/id/".$row['_id']."'>".$row['label']."</a></div><div class='element'>";
+			$html.= "<a draggable='false' class='lightbox-trigger' href='/".Class_Server::getOrgCode()."/admin/element/edit/id/".$row['_id']."'>".$row['label']."</a></div><div class='element'>";
 			switch($row['elementType']) {
 				case 'text':
 					$html.= "<input type='text' disabled='disabled'>";
@@ -44,7 +45,7 @@
 			}
 			$html.= "</div><div class='element-desc'>".$row['desc']."</div><div class='element-controller'></div>";
 		} else {
-			$html.= "<a draggable='false' class='lightbox-trigger' href='/admin/element/editbutton/id/".$row['_id']."'>";
+			$html.= "<a draggable='false' class='lightbox-trigger' href='/".Class_Server::getOrgCode()."/admin/element/editbutton/id/".$row['_id']."'>";
 			$html.="<input type='submit' name='button' id='button' value='".$row['label']."' /></a></div><div class='element'>";
 		}
 		echo $html;
