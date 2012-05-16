@@ -1,4 +1,5 @@
-var httpurl = "http://form.eo.test/";
+//var httpurl = "http://form.eo.test/";
+var httpurl = "http://form.enorange.cn";
 var from = '';
 $(document).ready(function() {
 	var obj = $('#detailform').attr('form-id');
