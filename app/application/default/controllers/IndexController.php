@@ -45,4 +45,28 @@ class IndexController extends Zend_Controller_Action
 		$this->view->elRowset = $elRowset;
 		$this->view->fvRowset = $fvRowset;
 	}
+	
+	public function showformAction()
+	{
+		$callback = $this->getRequest()->getParam('callback');
+		$formid = $this->getRequest()->getParam('id');
+		// 		$userid = $this->getRequest()->getParam('userid');
+		// 		$con = App_Factory::_m('Content');
+		// 		$row = $con->addFilter("formId", $formid)->addFilter("userid", $userid)->fetchOne();
+		$arrone = array();
+		// 		if(empty($row)) {
+		$formCo = App_Factory::_m('Element');
+		$formDoc = $formCo->addFilter('formId', $formid)->sort('sort', 1)->fetchAll();
+		foreach ($formDoc as $f){
+			$arrone[] = $f;
+		}
+		// 		} else {
+		// 			$arrone = $row->toArray();
+		// 			$arrone['state'] = 1;
+		// 		}
+		$val = Zend_Json::encode($arrone);
+		$this->getResponse()->appendBody($callback.'('.$val.')');
+		$this->_helper->viewRenderer->setNoRender(true);
+		$this->_helper->layout()->disableLayout();
+	}
 }

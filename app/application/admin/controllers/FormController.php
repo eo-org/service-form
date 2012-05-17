@@ -61,10 +61,26 @@ class Admin_FormController extends Zend_Controller_Action
 	{
 		$formid = $this->getRequest()->getParam('id');
 		$formCo = App_Factory::_m('Element');
-		$formDoc = $formCo->addFilter("formId", $formid)->fetchAll();
+		$formDoc = $formCo->addFilter("formId", $formid)->sort('sort', 1)->fetchAll();
 		$this->view->formElementList = $formDoc;
 		$this->view->formid = $formid;
 		$this->_helper->template->actionMenu(array('save'));
+	}
+	
+	public function updateAction()
+	{
+		$formid = $this->getRequest()->getParam('id');
+		$formCo = App_Factory::_m('Form');
+		$formDoc = $formCo->find($formid);
+		if($this->getRequest()->isPost()) {
+			$formname = $this->getRequest()->getParam('formname');
+			$returnlanguage = $this->getRequest()->getParam('returnlanguage');
+			$formDoc->setFromArray(array('formName' => $formname,'returnlanguage' => $returnlanguage));
+			$formDoc->save();
+			$this->_redirect(Class_Server::getOrgCode().'/admin');
+		}
+		$this->view->formElement = $formDoc;
+		$this->view->formid = $formid;
 	}
 
 	public function getElementTemplateAction()
@@ -117,7 +133,6 @@ class Admin_FormController extends Zend_Controller_Action
 			$optionDoc = $elementCo->addFilter("_id", $num['_id'])->fetchOne();
 			$optionDoc->delete();
 		}
-		
 		$this->_helper->redirector()->gotoSimple('index');
 		exit;
 
@@ -125,7 +140,17 @@ class Admin_FormController extends Zend_Controller_Action
     
     public function sortAction()
     {
-    	
+    	$optionval = $this->getRequest()->getParam('val');
+    	$arrbox = explode(":", $optionval);
+    	$arroption = array();
+    	$elementCo = App_Factory::_m('Element');
+    	for($i=0;$i<count($arrbox)-1;$i++){
+    		//echo $arrbox[$i]."<br>";
+    		$formDoc = $elementCo->find($arrbox[$i]);
+    		$formDoc->setFromArray(array('sort'=>$i+1));
+    		$formDoc->save();
+    	}
+    	exit;
     }
     
     public function getFormJsonAction()

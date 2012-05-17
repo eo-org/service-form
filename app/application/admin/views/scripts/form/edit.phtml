@@ -73,7 +73,8 @@ $('.action-menu').click(function(){
 	});
 	$.ajax({
 		type: "POST",
-		url: '/<?php echo Class_Server::getOrgCode();?>/admin/form/sort/val/'+elementid,
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/form/sort/',
+		data: "val="+elementid,
 		success: function(obj) {
 			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin";
 		}

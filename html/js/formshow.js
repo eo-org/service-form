@@ -6,7 +6,7 @@ $(document).ready(function() {
 	var orgcode = $('#detailform').attr('orgcode');
 	$.ajax({
 		dataType: "jsonp",
-		url : httpurl+orgcode+"/admin/index/showform/id/"+obj,
+		url : httpurl+orgcode+"/default/index/showform/id/"+obj,
 		success : function(json)
 		{
 			from+= "<form id='fillform' action='"+httpurl+orgcode+"/default/feedback/reply/id/"+obj+"' method='post'><div class='element-current'><ul class='form-editor'>";

@@ -34,6 +34,7 @@ class FeedbackController extends Zend_Controller_Action
 		$formCo = App_Factory::_m('Content');
 		$val = $this->getRequest()->getParams();
 		$arrin = array();
+		$http =  $_SERVER["HTTP_REFERER"];
 		foreach ($val as $num => $arrone){
 			if($num != 'module' && $num != 'controller' && $num != 'action' && $num != 'button' && $num != 'id'){
 				$arrid = explode("_",$num);
@@ -52,10 +53,15 @@ class FeedbackController extends Zend_Controller_Action
 		$formDoc = $formCo->create();
 		$formDoc->setFromArray($arrin);
 		$formDoc->save();
+		
+		$formCo = App_Factory::_m('Form');
+		$formDoc = $formCo->find($arrin['formId']);
+		$returnlanguage = $formDoc->returnlanguage;
+		
 		$this->_helper->viewRenderer->setNoRender(true);
 		echo "<script language='javascript' type='text/javascript'>";
-		echo "alert('您的问题我们已收到，谢谢您对本公司的支持！');";
-		echo "window.location.href='http://5.onlinefu.com/'";
+		echo "alert('".$returnlanguage."');";
+		echo "window.location.href='$http'";
 		echo "</script>";
 		exit;
 	}

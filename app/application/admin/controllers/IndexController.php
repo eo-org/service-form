@@ -41,7 +41,8 @@ class Admin_IndexController extends Zend_Controller_Action
 			'actionId' => 'id',
 			'click' => array(
 				'action' => 'contextMenu',
-				'menuItems' => array(
+				'menuItems' => array(	
+					array('更新', '/'.Class_Server::getOrgCode().'/admin/form/update/id/'),
 					array('编辑', '/'.Class_Server::getOrgCode().'/admin/form/edit/id/'),
 					array('删除', '/'.Class_Server::getOrgCode().'/admin/form/delete/id/')
 				)
@@ -57,13 +58,13 @@ class Admin_IndexController extends Zend_Controller_Action
 	{
 		$orgCode = Class_Server::getOrgCode();
 		$formname = $this->getRequest()->getParam('formname');
-		
+		$returnlanguage = $this->getRequest()->getParam('returnlanguage');
 		if($this->getRequest()->isPost()) {
 			$formCo = App_Factory::_m('Form');
 			$formDoc = $formCo->addFilter('formName', $formname)->addFilter('orgCode', $orgCode)->fetchOne();
 			if(empty($formDoc)) {
 				$formDoc = $formCo->create();
-				$formDoc->setFromArray(array('formName' => $formname,'orgCode' => $orgCode));
+				$formDoc->setFromArray(array('formName' => $formname,'orgCode' => $orgCode,'returnlanguage' => $returnlanguage));
 				$formDoc->save();
 				$this->_helper->redirector()->gotoSimple('index');
 			} else {
@@ -139,29 +140,5 @@ class Admin_IndexController extends Zend_Controller_Action
 
         return $this->_helper->json($result);
     }
-
-	public function showformAction()
-	{
-		$callback = $this->getRequest()->getParam('callback');
-		$formid = $this->getRequest()->getParam('id');
-// 		$userid = $this->getRequest()->getParam('userid');
-// 		$con = App_Factory::_m('Content');
-// 		$row = $con->addFilter("formId", $formid)->addFilter("userid", $userid)->fetchOne();
-		$arrone = array();
-// 		if(empty($row)) {
-			$formCo = App_Factory::_m('Element');
-			$formDoc = $formCo->addFilter('formId', $formid)->fetchAll();
-			foreach ($formDoc as $f){
-				$arrone[] = $f;
-			}	
-// 		} else {
-// 			$arrone = $row->toArray();
-// 			$arrone['state'] = 1;
-// 		}
-		$val = Zend_Json::encode($arrone);
-		$this->getResponse()->appendBody($callback.'('.$val.')');
-		$this->_helper->viewRenderer->setNoRender(true);
-		$this->_helper->layout()->disableLayout();
-	}
 
 }

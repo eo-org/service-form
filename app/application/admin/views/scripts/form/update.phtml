@@ -1,0 +1,11 @@
+<form action="" method="post">
+<input type="submit" name="button" id="button" value="保存" />
+<div style='color:#f00'><?php echo $this->message; ?></div>
+<?php $row = $this->formElement->toArray();?>
+<div>
+	&nbsp;&nbsp;请填写表单名称：<input id='formname' name='formname' type='text' value="<?php echo $row['formName'];?>" />
+</div>
+<div>
+	&nbsp;&nbsp;请填写返回语：<textarea id='returnlanguage' name='returnlanguage' ><?php echo $row['returnlanguage'];?></textarea>
+</div>
+</form>
