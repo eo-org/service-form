@@ -105,45 +105,6 @@ class Admin_FormController extends Zend_Controller_Action
 		$this->getResponse()->setHeader('result', 'success');
 	}
 
-	public function getFormJsonAction()
-    {
-        $pageSize = 20;
-        $currentPage = 1;
-	    $formCo = App_Factory::_m('Form');
-	   // $formCo->setField(array('formName'));
-		$formCo->addFilter("orgCode", Class_Server::getOrgCode());
-		
-        $result = array();
-        foreach($this->getRequest()->getParams() as $key => $value) {
-            if(substr($key, 0 , 7) == 'filter_') {
-                $field = substr($key, 7);
-                switch($field) {
-                     case 'formName':
-                    	$productCo->addFilter('formName', new MongoRegex("/^".$value."/"));
-                		break;
-                    case 'page':
-            			if(intval($value) != 0) {
-            				$currentPage = $value;
-            			}
-                        $result['currentPage'] = intval($value);
-            		    break;
-                }
-            }
-        }
-
-        //$formCo->setPage($currentPage)->setPageSize($pageSize);
-		$data = $formCo->fetchAll(true);
-		
-		$dataSize = $formCo->count();
-		
-		$result['data'] = $data;
-        $result['dataSize'] = $dataSize;
-        $result['pageSize'] = $pageSize;
-        $result['currentPage'] = $currentPage;
-
-        return $this->_helper->json($result);
-    }
-
     public function deleteAction()
     {
 		$formid = $this->getRequest()->getParam('id');
@@ -160,5 +121,49 @@ class Admin_FormController extends Zend_Controller_Action
 		$this->_helper->redirector()->gotoSimple('index');
 		exit;
 
+    }
+    
+    public function sortAction()
+    {
+    	
+    }
+    
+    public function getFormJsonAction()
+    {
+    	$pageSize = 20;
+    	$currentPage = 1;
+    	$formCo = App_Factory::_m('Form');
+    	// $formCo->setField(array('formName'));
+    	$formCo->addFilter("orgCode", Class_Server::getOrgCode());
+    
+    	$result = array();
+    	foreach($this->getRequest()->getParams() as $key => $value) {
+    		if(substr($key, 0 , 7) == 'filter_') {
+    			$field = substr($key, 7);
+    			switch($field) {
+    				case 'formName':
+    					$productCo->addFilter('formName', new MongoRegex("/^".$value."/"));
+    					break;
+    				case 'page':
+    					if(intval($value) != 0) {
+    						$currentPage = $value;
+    					}
+    					$result['currentPage'] = intval($value);
+    					break;
+    			}
+    		}
+    	}
+    
+    	//$formCo->setPage($currentPage)->setPageSize($pageSize);
+    	$data = $formCo->fetchAll(true);
+    
+    	$dataSize = $formCo->count();
+    
+    	$result['data'] = $data;
+    	$result['dataSize'] = $dataSize;
+    	$result['pageSize'] = $pageSize;
+    	$result['currentPage'] = $currentPage;
+    
+    	return $this->_helper->json($result);
     }
 }

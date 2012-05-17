@@ -55,7 +55,7 @@ class FeedbackController extends Zend_Controller_Action
 		$this->_helper->viewRenderer->setNoRender(true);
 		echo "<script language='javascript' type='text/javascript'>";
 		echo "alert('您的问题我们已收到，谢谢您对本公司的支持！');";
-		echo "window.location.href=' http://test.eo.test/form.php'";
+		echo "window.location.href='http://5.onlinefu.com/'";
 		echo "</script>";
 		exit;
 	}

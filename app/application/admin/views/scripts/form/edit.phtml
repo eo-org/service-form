@@ -25,7 +25,7 @@
 		<li class='element-dropable'></li>
 	<?php
 	foreach($this->formElementList as $row) {
-		$html = "<li id='form_element_".$row['_id']."' class='solid drag-handle' draggable='true'><div class='element-label'>";
+		$html = "<li id='form_element' org-id='".$row['_id']."' class='solid drag-handle' draggable='true'><div class='element-label'>";
 		if($row['elementType'] != 'button'){
 			$html.= "<a draggable='false' class='lightbox-trigger' href='/".Class_Server::getOrgCode()."/admin/element/edit/id/".$row['_id']."'>".$row['label']."</a></div><div class='element'>";
 			switch($row['elementType']) {
@@ -46,9 +46,9 @@
 					}
 					break;
 				case 'menu':
-					$html.= "<select disabled='disabled'><option></option></select>";
+					$html.= "<select disabled='disabled' style='width:100px'><option></option></select><br />";
 					foreach($row['option'] as $arrone){
-						$html.= "&nbsp;&nbsp;&nbsp;&nbsp;".$arrone."&nbsp;&nbsp;&nbsp;&nbsp;";
+						$html.= $arrone."&nbsp;&nbsp;&nbsp;&nbsp;";
 					}
 					break;
 			}
@@ -63,5 +63,21 @@
 	?>
 	</ul>
 </div>
-
 <div class='clear'></div>
+<script type='text/javascript'>
+
+$('.action-menu').click(function(){
+	var elementid = '';
+	$("li[id='form_element']").each(function(){
+		elementid+= $(this).attr("org-id")+':';
+	});
+	$.ajax({
+		type: "POST",
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/form/sort/val/'+elementid,
+		success: function(obj) {
+			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin";
+		}
+	});
+	return false;
+});
+</script>

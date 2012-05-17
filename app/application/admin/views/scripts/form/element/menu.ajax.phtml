@@ -1,14 +1,12 @@
 <li class='drag-dropable'></li>
-<li draggable="true" class="solid drag-handle">
+<li draggable="true" class="solid drag-handle" id="form_element" org-id="<?php echo $this->testid;?>">
 	<div class="element-label">
 		<a href="/<?php echo Class_Server::getOrgCode();?>/admin/element/edit/id/<?php echo $this->testid;?>" class="lightbox-trigger">标题</a>
 	</div>
 	<div class="element">
-		<select name="select" id="select">
-		  <option>第一选项</option>
-		  <option>第二选项</option>
-		  <option>第三选项</option>
+		<select name="select" id="select" disabled='disabled' style="width:100px">
 		</select>
+		<br />第一选项&nbsp;&nbsp;&nbsp;&nbsp;第二选项&nbsp;&nbsp;&nbsp;第三选项
 	</div>
 	<div class="element-desc">标题描述</div><div class="element-controller"></div>
 </li>
