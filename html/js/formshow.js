@@ -1,5 +1,5 @@
 //var httpurl = "http://form.eo.test/";
-var httpurl = "http://form.enorange.cn";
+var httpurl = "http://form.enorange.cn/";
 var from = '';
 $(document).ready(function() {
 	var obj = $('#detailform').attr('form-id');
@@ -31,6 +31,12 @@ $(document).ready(function() {
 					$.each(data.option, function(j, val) {
 						from+= "<input id='option_"+k+"' type='checkbox' value='"+j+"' name='"+data.label+"_"+j+"_"+val+"'><label for='option_"+j+"'>"+val+"</label>";
 					});
+				} else if(data.elementType == 'menu'){
+					from+= "<select id='select' name='"+data.label+"'>";
+					$.each(data.option, function(j, val) {
+						from+= "<option value='"+val+"'>"+val+"</option>";
+					});
+					from+= "</select>";
 				}
 				if(data.elementType != 'button') {
 					from+="</div><div class='element-desc'>"+data.desc+"</div></li>";

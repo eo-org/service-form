@@ -8,6 +8,9 @@
 	<div class='element-library-item drag-handle' draggable='true' element-type='multi-checkbox'>
 		复选框
 	</div>
+	<div class='element-library-item drag-handle' draggable='true' element-type='menu'>
+		菜单域
+	</div>
 	<div class='element-library-item drag-handle' draggable='true' element-type='textarea'>
 		文本域
 	</div>
@@ -40,6 +43,12 @@
 				case 'multi-checkbox':
 					foreach($row['option'] as $arrone){
 						$html.= "<input type='checkbox' disabled='disabled' name='' value=''><label>".$arrone."</label>";
+					}
+					break;
+				case 'menu':
+					$html.= "<select disabled='disabled'><option></option></select>";
+					foreach($row['option'] as $arrone){
+						$html.= "&nbsp;&nbsp;&nbsp;&nbsp;".$arrone."&nbsp;&nbsp;&nbsp;&nbsp;";
 					}
 					break;
 			}

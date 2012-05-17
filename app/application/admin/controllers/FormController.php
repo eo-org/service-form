@@ -60,10 +60,8 @@ class Admin_FormController extends Zend_Controller_Action
 	public function editAction()
 	{
 		$formid = $this->getRequest()->getParam('id');
-		echo $formid;
 		$formCo = App_Factory::_m('Element');
 		$formDoc = $formCo->addFilter("formId", $formid)->fetchAll();
-		
 		$this->view->formElementList = $formDoc;
 		$this->view->formid = $formid;
 		$this->_helper->template->actionMenu(array('save'));
@@ -78,7 +76,7 @@ class Admin_FormController extends Zend_Controller_Action
 		if($type == 'text' || $type == 'textarea') {
 			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','required'=>0,'desc'=>'标题描述'));
 		} else if($type == 'button') {
-			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','type'=>'submit'));
+			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'提交','type'=>'submit'));
 		} else {
 			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','required'=>0,'desc'=>'标题描述','option'=>array('第一选项','第二选项','第三选项')));
 		}
@@ -96,6 +94,9 @@ class Admin_FormController extends Zend_Controller_Action
 				break;
 			case 'multi-checkbox':
 				$this->render('element/multi-checkbox');
+				break;
+			case 'menu':
+				$this->render('element/menu');
 				break;
 			case 'button':
 				$this->render('element/button');
