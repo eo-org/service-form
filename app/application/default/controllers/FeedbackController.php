@@ -29,13 +29,7 @@ class FeedbackController extends Zend_Controller_Action
 		$this->getResponse()->appendBody($callback.'('.$json.')');
 	}
 	
-	public function postAction()
-	{
-		$this->getResponse()->appendBody('called from post action');
-		exit;
-	}
-	
-	public function putAction()
+	public function replyAction()
 	{
 		$formCo = App_Factory::_m('Content');
 		$val = $this->getRequest()->getParams();

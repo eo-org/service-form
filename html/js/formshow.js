@@ -1,17 +1,17 @@
-//var httpurl = "http://form.eo.test/";
-var httpurl = "http://form.enorange.cn";
+var httpurl = "http://form.eo.test/";
+//var httpurl = "http://form.enorange.cn";
 var from = '';
 $(document).ready(function() {
 	var obj = $('#detailform').attr('form-id');
 	var orgcode = $('#detailform').attr('orgcode');
 	$.ajax({
 		dataType: "jsonp",
-		url : httpurl+orgcode+"/admin/index/showForm/id/"+obj,
+		url : httpurl+orgcode+"/admin/index/showform/id/"+obj,
 		success : function(json)
 		{
-			from+= "<form id='fillform' action='"+httpurl+orgcode+"/default/feedback/put/id/"+obj+"' method='post'><div class='element-current'><ul class='form-editor'>";
+			from+= "<form id='fillform' action='"+httpurl+orgcode+"/default/feedback/reply/id/"+obj+"' method='post'><div class='element-current'><ul class='form-editor'>";
 			$.each(json, function(k, data){
-				from+= "<li draggable='true' class='solid drag-handle' id='form_element_"+data._id+"'>";
+				from+= "<li draggable='true' class='solid drag-handle' id='form_element'>";
 				if(data.elementType != 'button') {
 					from+= "<div class='element-label'>"+data.label;
 					if(data.required == 1){
@@ -35,12 +35,15 @@ $(document).ready(function() {
 				if(data.elementType != 'button') {
 					from+="</div><div class='element-desc'>"+data.desc+"</div></li>";
 				} else {
-					from+="<input type='"+data.type+"' name='button' id='button' value='"+data.label+"' /></li>";
+//					if(data.type == 'submit'){
+//						from+="<input type='button' name='button' id='submitbutton' value='"+data.label+"' /></li>";
+//					} else {
+						from+="<input type='"+data.type+"' name='button' id='button' value='"+data.label+"' /></li>";
+//					}
 				}
 			});
 			from+="</ul></div></form>";
 			$('#detailform').html(from);
-			
 		}
 	});
 });
