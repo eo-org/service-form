@@ -42,8 +42,9 @@ class Admin_IndexController extends Zend_Controller_Action
 			'click' => array(
 				'action' => 'contextMenu',
 				'menuItems' => array(	
-					array('更新', '/'.Class_Server::getOrgCode().'/admin/form/update/id/'),
-					array('编辑', '/'.Class_Server::getOrgCode().'/admin/form/edit/id/'),
+					array('编辑', '/'.Class_Server::getOrgCode().'/admin/form/update/id/'),
+					array('编辑下属元素', '/'.Class_Server::getOrgCode().'/admin/form/edit/id/'),
+					array('查看数据', '/'.Class_Server::getOrgCode().'/admin/data/index/id/'),
 					array('删除', '/'.Class_Server::getOrgCode().'/admin/form/delete/id/')
 				)
 			),
@@ -62,9 +63,15 @@ class Admin_IndexController extends Zend_Controller_Action
 		if($this->getRequest()->isPost()) {
 			$formCo = App_Factory::_m('Form');
 			$formDoc = $formCo->addFilter('formName', $formname)->addFilter('orgCode', $orgCode)->fetchOne();
+			$val = $this->getRequest()->getParam('val');
 			if(empty($formDoc)) {
 				$formDoc = $formCo->create();
-				$formDoc->setFromArray(array('formName' => $formname,'orgCode' => $orgCode,'returnlanguage' => $returnlanguage));
+				$arrbox = explode(":", $val);
+				$arroption = array();
+				for($i=0;$i<count($arrbox)-1;$i++){
+					$arroption[] = $arrbox[$i];
+				}
+				$formDoc->setFromArray(array('formName' => $formname,'orgCode' => $orgCode,'returnlanguage' => $returnlanguage,'deal' => $arroption));
 				$formDoc->save();
 				$this->_helper->redirector()->gotoSimple('index');
 			} else {

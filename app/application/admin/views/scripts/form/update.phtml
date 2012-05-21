@@ -1,5 +1,5 @@
-<form action="" method="post">
-<input type="submit" name="button" id="button" value="保存" />
+
+<a class="action-menu" id="updateElementSetting" href="">保存</a>
 <div style='color:#f00'><?php echo $this->message; ?></div>
 <?php $row = $this->formElement->toArray();?>
 <div>
@@ -8,4 +8,45 @@
 <div>
 	&nbsp;&nbsp;请填写返回语：<textarea id='returnlanguage' name='returnlanguage' ><?php echo $row['returnlanguage'];?></textarea>
 </div>
-</form>
+<div>
+	&nbsp;&nbsp;对提交数据的操作：<input id='addtable'type="button" value="添加" />
+	<div id='addt'>
+	<?php $i=0;if(!empty($row['deal'])){?>
+		<?php foreach($row['deal'] as $num => $option){?>
+			<div id='<?php echo 's'.$i;?>' style="text-align:left;">
+				<span><input type="text" id='<?php echo 's'.$i;?>' value="<?php echo $option;?>" name='<?php echo 's'.$i;?>' /></span>
+				<span><input id='deloption' type='button' value='删除' did='<?php echo 's'.$i;?>'></span>
+			</div>
+	<?php $i++;}}?>
+	</div>
+</div>
+<script type="text/javascript">
+var i=50;
+$('#addtable').click(function(){
+	i++;
+	var aa="<div id=s"+i+"><span><input type='text' id=s"+i+" value=''/></span>&nbsp;<span><input id='deloption' type='button' value='删除' did=s"+i+"></span></div>";
+	$("#addt").append(unescape(aa));
+});
+$('#deloption').live("click",function(){
+	var s = $(this).attr("did");
+	$("#"+s).remove();
+});
+$('#updateElementSetting').click(function(){
+	var attrValue="";
+	$("#addt :input:text").each(function(){
+		var value = $(this).attr("value");
+		attrValue+= value + ':';
+	});
+	var formname = $('#formname').val();
+	var returnlanguage = $('#returnlanguage').val();
+	$.ajax({
+		type: "POST",
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/form/update/id/<?php echo $this->formid;?>',
+		data: 'formname='+formname+'&returnlanguage='+returnlanguage+'&val='+attrValue,
+		success: function(obj) {
+			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin";
+		}
+	});
+	return false;
+});
+</script>

@@ -1,0 +1,29 @@
+<?php $row = $this->formElementList->toArray(); $form = $this->formAttr->toArray();?>
+<a class="action-menu" id="updateContentSetting" href="">保存</a>
+<br />
+<?php 
+	foreach($row as $num => $arrone)
+	{
+		echo $num.":".$arrone.'<br />';
+	}
+?>
+<select name="deal" id="deal">
+<?php foreach($form['deal'] as $num => $arrtwo){ ?>
+  <option value='<?php echo $arrtwo;?>' <?php if(!empty($row['deal'])){if($row['deal']==$arrtwo){echo "selected='selected'";}}?>><?php echo $arrtwo;?></option>
+  <?php }?>
+</select>
+<script type="text/javascript">
+$('#updateContentSetting').click(function(){
+	
+	var selvalue = $('#deal').find('option:selected').text();
+	$.ajax({
+		type: "POST",
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/data/edit/id/<?php echo $this->contentid;?>',
+		data: 'deal='+selvalue,
+		success: function(obj) {
+			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin/data/index/id/<?php echo $this->formid;?>";
+		}
+	});
+	return false;
+});
+</script>

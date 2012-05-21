@@ -75,7 +75,14 @@ class Admin_FormController extends Zend_Controller_Action
 		if($this->getRequest()->isPost()) {
 			$formname = $this->getRequest()->getParam('formname');
 			$returnlanguage = $this->getRequest()->getParam('returnlanguage');
-			$formDoc->setFromArray(array('formName' => $formname,'returnlanguage' => $returnlanguage));
+			$val = $this->getRequest()->getParam('val');
+			//$formDoc = $formCo->create();
+			$arrbox = explode(":", $val);
+			$arroption = array();
+			for($i=0;$i<count($arrbox)-1;$i++){
+				$arroption[] = $arrbox[$i];
+			}
+			$formDoc->setFromArray(array('formName' => $formname,'returnlanguage' => $returnlanguage,'deal' => $arroption));
 			$formDoc->save();
 			$this->_redirect(Class_Server::getOrgCode().'/admin');
 		}

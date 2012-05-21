@@ -1,10 +1,44 @@
-<form action="" method="post">
-<input type="submit" name="button" id="button" value="保存" />
+
+<a class="action-menu" id="updateElementSetting" href="">保存</a>
 <div style='color:#f00'><?php echo $this->message; ?></div>
 <div>
 	&nbsp;&nbsp;请填写表单名称：<input id='formname' name='formname' type='text' />
 </div>
 <div>
-	&nbsp;&nbsp;请填写返回语：<textarea id='returnlanguage' name='returnlanguage' ></textarea>
+	&nbsp;&nbsp;请填写返回语：<textarea id='returnlanguage' name='returnlanguage' >谢谢您的参与！</textarea>
 </div>
-</form>
+<div>
+	&nbsp;&nbsp;对提交数据的操作：<input id='addtable'type="button" value="添加" />
+	<div id='addt'></div>
+</div>
+
+<script type="text/javascript">
+var i=5;
+$('#addtable').click(function(){
+	i++;
+	var aa="<div id=s"+i+"><span><input type='text' id=s"+i+" value=''/></span>&nbsp;<span><input id='deloption' type='button' value='删除' did=s"+i+"></span></div>";
+	$("#addt").append(unescape(aa));
+});
+$('#deloption').live("click",function(){
+	var s = $(this).attr("did");
+	$("#"+s).remove();
+});
+$('#updateElementSetting').click(function(){
+	var attrValue="";
+	$("#addt :input:text").each(function(){
+		var value = $(this).attr("value");
+		attrValue+= value + ':';
+	});
+	var formname = $('#formname').val();
+	var returnlanguage = $('#returnlanguage').val();
+	$.ajax({
+		type: "POST",
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/index/create/',
+		data: 'formname='+formname+'&returnlanguage='+returnlanguage+'&val='+attrValue,
+		success: function(obj) {
+			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin";
+		}
+	});
+	return false;
+});
+</script>
