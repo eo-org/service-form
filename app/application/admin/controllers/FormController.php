@@ -1,19 +1,6 @@
 <?php
 class Admin_FormController extends Zend_Controller_Action
 {
-	private $formCo;
-	protected function _getResource()
-	{
-		$formId = $this->getRequest()->getParam('id');
-
-		$formCo = App_Factory::_m('Form');
-		$formDoc = $formCo->find($formId);
-		if(is_null($formDoc)) {
-			$formDoc = $formCo->create();
-		}
-		return $formDoc;
-	}
-
 	public function init()
 	{
 		$this->view->useJs('admin/attributeset.js');
@@ -76,7 +63,6 @@ class Admin_FormController extends Zend_Controller_Action
 			$formname = $this->getRequest()->getParam('formname');
 			$returnlanguage = $this->getRequest()->getParam('returnlanguage');
 			$val = $this->getRequest()->getParam('val');
-			//$formDoc = $formCo->create();
 			$arroption = array();
 			$arrbox = explode(":", $val);
 			for($i=0;$i<count($arrbox)-1;$i++){
@@ -127,23 +113,6 @@ class Admin_FormController extends Zend_Controller_Action
 		}
 		$this->getResponse()->setHeader('result', 'success');
 	}
-
-    public function deleteAction()
-    {
-		$formid = $this->getRequest()->getParam('id');
-		$formCo = App_Factory::_m('Form');
-		$row = $formCo->find($formid);
-		$row->delete();
-		$elementCo = App_Factory::_m('Element');
-		$elementDoc = $elementCo->addFilter("formId", $formid)->fetchAll();
-		foreach ($elementDoc as $num){
-			$optionDoc = $elementCo->addFilter("_id", $num['_id'])->fetchOne();
-			$optionDoc->delete();
-		}
-		$this->_helper->redirector()->gotoSimple('index');
-		exit;
-
-    }
     
     public function sortAction()
     {
@@ -152,7 +121,6 @@ class Admin_FormController extends Zend_Controller_Action
     	$arroption = array();
     	$elementCo = App_Factory::_m('Element');
     	for($i=0;$i<count($arrbox)-1;$i++){
-    		//echo $arrbox[$i]."<br>";
     		$formDoc = $elementCo->find($arrbox[$i]);
     		$formDoc->setFromArray(array('sort'=>$i+1));
     		$formDoc->save();
@@ -165,7 +133,6 @@ class Admin_FormController extends Zend_Controller_Action
     	$pageSize = 20;
     	$currentPage = 1;
     	$formCo = App_Factory::_m('Form');
-    	// $formCo->setField(array('formName'));
     	$formCo->addFilter("orgCode", Class_Server::getOrgCode());
     
     	$result = array();
@@ -185,10 +152,7 @@ class Admin_FormController extends Zend_Controller_Action
     			}
     		}
     	}
-    
-    	//$formCo->setPage($currentPage)->setPageSize($pageSize);
     	$data = $formCo->fetchAll(true);
-    
     	$dataSize = $formCo->count();
     
     	$result['data'] = $data;

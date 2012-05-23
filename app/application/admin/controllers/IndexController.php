@@ -5,7 +5,6 @@ class Admin_IndexController extends Zend_Controller_Action
 	protected function _getResource()
 	{
 		$formId = $this->getRequest()->getParam('id');
-
 		$formCo = App_Factory::_m('Form');
 		$formDoc = $formCo->find($formId);
 		if(is_null($formDoc)) {
@@ -87,16 +86,6 @@ class Admin_IndexController extends Zend_Controller_Action
 			}
 		}
 	}
-
-	public function editAction()
-	{
-		$formid = $this->getRequest()->getParam('id');
-		$formCo = App_Factory::_m('Form');
-		$formDoc = $formCo->addFilter('_id', $formid)->fetchAll();
-		$this->view->formElementList = $formDoc;
-		$this->view->formid = $formid;
-		$this->_helper->template->actionMenu(array('save', 'delete'));
-	}
 	
 	public function deleteAction()
 	{
@@ -111,28 +100,6 @@ class Admin_IndexController extends Zend_Controller_Action
 			$optionDoc->delete();
 		}
 		$this->_helper->redirector()->gotoSimple('index');
-		exit;
-	
-	}
-
-	public function getElementTemplateAction()
-	{
-		$type = $this->getRequest()->getParam('type');
-		switch($type) {
-			case 'text':
-				$this->render('element/text');
-				break;
-			case 'textarea':
-				$this->render('element/textarea');
-				break;
-			case 'select':
-				$this->render('element/select');
-				break;
-			case 'multi-checkbox':
-				$this->render('element/multi-checkbox');
-				break;
-		}
-		$this->getResponse()->setHeader('result', 'success');
 	}
 
 	public function getFormJsonAction()
@@ -160,7 +127,6 @@ class Admin_IndexController extends Zend_Controller_Action
                 }
             }
         }
-
         $formCo->setPage($currentPage)->setPageSize($pageSize);
 		$data = $formCo->fetchAll(true);
 		$dataSize = $formCo->count();

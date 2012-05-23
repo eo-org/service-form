@@ -1,47 +1,43 @@
 <?php
 class Admin_DataController extends Zend_Controller_Action
 {
-	private $formCo;
-
-	public function init()
-	{
-		$this->formCo = App_Factory::_m('Content');
-		$ajaxContext = $this->_helper->getHelper('AjaxContext');
-        $ajaxContext->addActionContext('get-element-template', 'html')
-            ->initContext();
-	}
-
 	public function indexAction()
 	{
 		$this->_helper->template->head('数据列表');
 		$formid = $this->getRequest()->getParam('id');
-		$contentCo = App_Factory::_m('Element');
-		$contentDoc = $contentCo->addFilter("formId", $formid)->fetchAll(true);
-		$first = '';
-		foreach ($contentDoc as $f => $num){
-			if (array_key_exists("sort",$num)){
-				if($num['sort'] == 1){
-					$first = $num['label'];
-				}
-			} else {
-				$first = $contentDoc[0]['label'];
-				break;
-			}
-		}
+// 		$contentCo = App_Factory::_m('Element');
+// 		$contentDoc = $contentCo->addFilter("formId", $formid)->fetchAll(true);
+// 		$first = '';
+// 		foreach ($contentDoc as $f => $num){
+// 			if (array_key_exists("sort",$num)){
+// 				if($num['sort'] == 1){
+// 					$first = $num['label'];
+// 				}
+// 			} else {
+// 				$first = $contentDoc[0]['label'];
+// 				break;
+// 			}
+// 		}
 		$formCo = App_Factory::_m('Form');
 		$formDoc = $formCo->find($formid);
 		$form = $formDoc->toArray();
+		
 		$arrdeal = array();
+		$arrshowlist = array();
 		foreach ($form['deal'] as $m => $arrone){
 			$arrdeal[$arrone] = $arrone;
 		}
 		$arrdeal['undefined'] = '新加';
+		if(empty($form['showlist'])){
+			$this->_redirect(Class_Server::getOrgCode().'/admin/data/showlist/id/'.$formid);
+		}
+		foreach ($form['showlist'] as $n => $arrtwo){
+			$arrshowlist[$arrtwo] = $arrtwo;
+		}
+		$arrshowlist['deal'] = '处理';
+		$arrshowlist['~contextMenu'] = '';
 		$hashParam = $this->getRequest()->getParam('hashParam');
-        $labels = array(
-        	$first => $first,
-        	'deal' => '处理',
-			'~contextMenu' => ''
-		);
+        $labels = $arrshowlist;
 		$partialHTML = $this->view->partial('select-search-header-front.phtml', array(
 			'labels' => $labels,
 			'selectFields' => array(
@@ -59,6 +55,7 @@ class Admin_DataController extends Zend_Controller_Action
 			'initSelectRun' => 'true',
 			'hashParam' => $hashParam
 		));
+		$this->view->formid = $formid;
         $this->view->partialHTML = $partialHTML;
 	}
 
@@ -90,7 +87,29 @@ class Admin_DataController extends Zend_Controller_Action
 		$row->delete();
 		$this->_redirect(Class_Server::getOrgCode().'/admin/data/index/id/'.$formid);
 		exit;
+	}
 	
+	public function showlistAction()
+	{
+		$this->_helper->template->head('显示列表选择');
+		$formid = $this->getRequest()->getParam('id');
+		$contentCo = App_Factory::_m('Element');
+		$contentDoc = $contentCo->addFilter("formId", $formid)->fetchAll(true);
+		$formCo = App_Factory::_m('Form');
+		$formDoc = $formCo->find($formid);
+		if($this->getRequest()->isPost()) {
+			$val = $this->getRequest()->getParam('val');
+			$arroption = array();
+			$arrbox = explode(":", $val);
+			for($i=0;$i<count($arrbox)-1;$i++){
+				$arroption[] = $arrbox[$i];
+			}
+			$formDoc->setFromArray(array('showlist' => $arroption));
+			$formDoc->save();
+		}
+		$this->view->formid = $formid;
+		$this->view->contentrow = $contentDoc;
+		$this->view->formrow = $formDoc;
 	}
 
 	public function getFormJsonAction()
@@ -99,7 +118,6 @@ class Admin_DataController extends Zend_Controller_Action
         $currentPage = 1;
         $formid = $this->getRequest()->getParam('id');
 	    $formCo = App_Factory::_m('Content');
-	    //$formCo->setField(array('label'));
 	    $formCo->addFilter("formId", $formid);
 		
         $result = array();

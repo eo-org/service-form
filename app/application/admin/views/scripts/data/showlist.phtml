@@ -1,0 +1,41 @@
+<a id='saveshowlist' href='#'>保存</a>
+<ul>
+<?php 
+	$row = $this->contentrow;
+	$form = $this->formrow->toArray();
+	foreach($row as $m => $arrone){
+		if($arrone['elementType'] != 'button'){
+?>
+<li>
+<input type="checkbox" value="<?php echo $arrone['label'];?>" name='checkbox'  id="<?php echo $arrone['label'];?>" >
+<?php echo $arrone['label'];?>
+</li>
+<?php }}?>
+</ul>
+<script type='text/javascript'>
+$(document).ready(function(){
+	<?php 
+		if(!empty($form['showlist'])){ 
+ 			$showlist = $form['showlist'];
+	 		foreach($showlist as $n => $arrtwo){?>
+			$('#<?php echo $arrtwo;?>').attr("checked","checked");
+	<?php }}else{?>
+		alert('请勾选列表显示列！');
+	<?php }?>
+});
+$('#saveshowlist').click(function(){
+	var isCheck = '';
+	$(":input:checkbox[name='checkbox']:checked").each(function() { 
+		isCheck+= this.value+':'; 
+		});
+	$.ajax({
+		type: "POST",
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/data/showlist/id/<?php echo $this->formid;?>',
+		data: 'val='+isCheck,
+		success: function(obj) {
+			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin/data/index/id/<?php echo $this->formid;?>";
+		}
+	});
+	return false;
+});
+</script>

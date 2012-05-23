@@ -1,16 +1,6 @@
 <?php
 class Admin_ElementController extends Zend_Controller_Action
 {
-	protected function _getResource()
-	{
-		$elementId = $this->getRequest()->getParam('id');
-		//echo $elementId."<br>";
-		$formCo = App_Factory::_m('Form');
-		$formDoc = $formCo->find($elementId);
-		//Zend_Debug::dump($formDoc);exit;
-		return $formDoc;
-	}
-
 	public function indexAction()
 	{
 
@@ -39,8 +29,6 @@ class Admin_ElementController extends Zend_Controller_Action
 				$row->setFromArray(array('option'=>$arroption,'desc'=>$desc,'required'=>$required,'label'=>$label));
 			}
 			$row->save();
-			//$this->_forward('edit','index','admin',array('id'=>$formid));
-			//$this->_redirect('/admin/form/edit/id/'.$formid);
 		}
 		$this->view->row = $row;
 		$this->view->elementid = $elementId;
@@ -76,19 +64,14 @@ class Admin_ElementController extends Zend_Controller_Action
 		if($ttype == 'select' || $ttype == 'MultiCheckbox'){
 			for($i=1;$i<4;$i++){
 				switch($i){
-
 					case 1:
-
 						$strxx = '第一选项';
-
 						break;
 					case 2:
 						$strxx = '第二选项';
-
 						break;
 					case 3:
 						$strxx = '第三选项';
-
 						break;
 				}
 				$arrbox = array(
