@@ -77,8 +77,8 @@ class Admin_FormController extends Zend_Controller_Action
 			$returnlanguage = $this->getRequest()->getParam('returnlanguage');
 			$val = $this->getRequest()->getParam('val');
 			//$formDoc = $formCo->create();
-			$arrbox = explode(":", $val);
 			$arroption = array();
+			$arrbox = explode(":", $val);
 			for($i=0;$i<count($arrbox)-1;$i++){
 				$arroption[] = $arrbox[$i];
 			}

@@ -1,9 +1,9 @@
 //var httpurl = "http://form.eo.test/";
 var httpurl = "http://form.enorange.cn/";
-var from = '';
 $(document).ready(function() {
 	var obj = $('#detailform').attr('form-id');
 	var orgcode = $('#detailform').attr('orgcode');
+	var from = '';
 	$.ajax({
 		dataType: "jsonp",
 		url : httpurl+orgcode+"/default/index/showform/id/"+obj,
@@ -41,11 +41,7 @@ $(document).ready(function() {
 				if(data.elementType != 'button') {
 					from+="</div><div class='element-desc'>"+data.desc+"</div></li>";
 				} else {
-//					if(data.type == 'submit'){
-//						from+="<input type='button' name='button' id='submitbutton' value='"+data.label+"' /></li>";
-//					} else {
-						from+="<input type='"+data.type+"' name='button' id='button' value='"+data.label+"' /></li>";
-//					}
+					from+="<input type='"+data.type+"' name='button' id='button' value='"+data.label+"' /></li>";
 				}
 			});
 			from+="</ul></div></form>";

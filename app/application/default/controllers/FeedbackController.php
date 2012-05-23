@@ -50,6 +50,7 @@ class FeedbackController extends Zend_Controller_Action
 			}
 		}
 		$arrin['formId'] = $val['id'];
+		//$arrin['deal'] = '未处理';
 		$formDoc = $formCo->create();
 		$formDoc->setFromArray($arrin);
 		$formDoc->save();

@@ -45,7 +45,7 @@ class Admin_IndexController extends Zend_Controller_Action
 					array('编辑', '/'.Class_Server::getOrgCode().'/admin/form/update/id/'),
 					array('编辑下属元素', '/'.Class_Server::getOrgCode().'/admin/form/edit/id/'),
 					array('查看数据', '/'.Class_Server::getOrgCode().'/admin/data/index/id/'),
-					array('删除', '/'.Class_Server::getOrgCode().'/admin/form/delete/id/')
+					array('删除', '/'.Class_Server::getOrgCode().'/admin/index/delete/id/')
 				)
 			),
 			'initSelectRun' => 'true',
@@ -66,10 +66,18 @@ class Admin_IndexController extends Zend_Controller_Action
 			$val = $this->getRequest()->getParam('val');
 			if(empty($formDoc)) {
 				$formDoc = $formCo->create();
-				$arrbox = explode(":", $val);
 				$arroption = array();
-				for($i=0;$i<count($arrbox)-1;$i++){
-					$arroption[] = $arrbox[$i];
+				if($val == ''){
+					$arroption = array(
+							0 => '未处理',
+							1 => '已处理',
+							2 => '忽视'
+						);
+				}else{
+					$arrbox = explode(":", $val);		
+					for($i=0;$i<count($arrbox)-1;$i++){
+						$arroption[] = $arrbox[$i];
+					}
 				}
 				$formDoc->setFromArray(array('formName' => $formname,'orgCode' => $orgCode,'returnlanguage' => $returnlanguage,'deal' => $arroption));
 				$formDoc->save();
@@ -88,6 +96,23 @@ class Admin_IndexController extends Zend_Controller_Action
 		$this->view->formElementList = $formDoc;
 		$this->view->formid = $formid;
 		$this->_helper->template->actionMenu(array('save', 'delete'));
+	}
+	
+	public function deleteAction()
+	{
+		$formid = $this->getRequest()->getParam('id');
+		$formCo = App_Factory::_m('Form');
+		$row = $formCo->find($formid);
+		$row->delete();
+		$elementCo = App_Factory::_m('Element');
+		$elementDoc = $elementCo->addFilter("formId", $formid)->fetchAll();
+		foreach ($elementDoc as $num){
+			$optionDoc = $elementCo->addFilter("_id", $num['_id'])->fetchOne();
+			$optionDoc->delete();
+		}
+		$this->_helper->redirector()->gotoSimple('index');
+		exit;
+	
 	}
 
 	public function getElementTemplateAction()

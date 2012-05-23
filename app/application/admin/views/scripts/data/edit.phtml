@@ -1,20 +1,21 @@
 <?php $row = $this->formElementList->toArray(); $form = $this->formAttr->toArray();?>
 <a class="action-menu" id="updateContentSetting" href="">保存</a>
-<br />
-<?php 
-	foreach($row as $num => $arrone)
-	{
-		echo $num.":".$arrone.'<br />';
-	}
-?>
+<br /><br />
+<ul>
+<?php foreach($row as $num => $arrone){ ?>
+		<?php if($num != 'orgCode' && $num != 'formId' && $num != 'deal'){?>
+		<li><?php echo $num."：".$arrone;?></li><br />
+<?php } } ?>
+<li> 操作：
 <select name="deal" id="deal">
 <?php foreach($form['deal'] as $num => $arrtwo){ ?>
   <option value='<?php echo $arrtwo;?>' <?php if(!empty($row['deal'])){if($row['deal']==$arrtwo){echo "selected='selected'";}}?>><?php echo $arrtwo;?></option>
   <?php }?>
 </select>
+</li>
+</ul>
 <script type="text/javascript">
 $('#updateContentSetting').click(function(){
-	
 	var selvalue = $('#deal').find('option:selected').text();
 	$.ajax({
 		type: "POST",
