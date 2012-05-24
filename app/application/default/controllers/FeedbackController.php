@@ -1,4 +1,5 @@
 <?php
+require CONTAINER_PATH.'/app/application/default/forms/Fucom/Proving.php';
 class FeedbackController extends Zend_Controller_Action
 {
 	public function init()
@@ -35,6 +36,8 @@ class FeedbackController extends Zend_Controller_Action
 		$val = $this->getRequest()->getParams();
 		$arrin = array();
 		$http =  $_SERVER["HTTP_REFERER"];
+		$pd = 0;
+		$proving = new Form_Fucom_Proving();
 		foreach ($val as $num => $arrone){
 			if($num != 'module' && $num != 'controller' && $num != 'action' && $num != 'button' && $num != 'id'){
 				$arrid = explode("_",$num);
@@ -50,17 +53,43 @@ class FeedbackController extends Zend_Controller_Action
 			}
 		}
 		$arrin['formId'] = $val['id'];
-		//$arrin['deal'] = '未处理';
-		$formDoc = $formCo->create();
-		$formDoc->setFromArray($arrin);
-		$formDoc->save();
-		
-		$formCo = App_Factory::_m('Form');
-		$formDoc = $formCo->find($arrin['formId']);
-		$returnlanguage = $formDoc->returnlanguage;
-		
-		$this->_helper->viewRenderer->setNoRender(true);
+		$elementCo = App_Factory::_m('Element');
+		$elementDoc = $elementCo->addFilter('formId', $arrin['formId'])->sort('sort', 1)->fetchAll();
+		foreach ($elementDoc as $f => $arrtwo){
+			if($arrtwo['elementType'] != 'button'){
+				switch($arrtwo['proving']) {
+					case 0:
+						break;
+					case 1:
+						$isnull = $proving->isnull($arrin[$arrtwo['label']]);
+						break;
+					case 2:
+						$telephone = $proving->telephone($arrin[$arrtwo['label']]);
+						break;
+					case 3:
+						$email = $proving->email($arrin[$arrtwo['label']]);
+						break;
+				}
+			}
+		}
+
 		echo "<script language='javascript' type='text/javascript'>";
+		if( $isnull == 1 && $telephone == 1 && $email == 1){
+			$formDoc = $formCo->create();
+			$formDoc->setFromArray($arrin);
+			$formDoc->save();
+			$formCo = App_Factory::_m('Form');
+			$formDoc = $formCo->find($arrin['formId']);
+			$returnlanguage = $formDoc->returnlanguage;
+			$this->_helper->viewRenderer->setNoRender(true);
+		}
+		if($isnull == 0){
+			$returnlanguage='不能有空值！';
+		} else if ($telephone == 0){
+			$returnlanguage='电话号码格式错误！';
+		} else if ($email == 0){
+			$returnlanguage='邮箱格式错误！';
+		}
 		echo "alert('".$returnlanguage."');";
 		echo "window.location.href='$http'";
 		echo "</script>";

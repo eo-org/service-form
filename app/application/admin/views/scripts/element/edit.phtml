@@ -19,6 +19,16 @@
       <td><textarea name="desc" id="desc" cols="30" rows="3"><?php echo $row['desc'];?></textarea></td>
     </tr>
     <tr>
+    <td height="40" align="right">验证方式：</td>
+      <td><select name="select" id="proving">
+        <option <?php if($row['proving']==0){echo "selected='selected'";}?> value='0'>无</option>
+        <option <?php if($row['proving']==1){echo "selected='selected'";}?> value='1'>非空验证</option>
+        <option <?php if($row['proving']==2){echo "selected='selected'";}?> value='2'>电话验证</option>
+        <option <?php if($row['proving']==3){echo "selected='selected'";}?> value='3'>邮箱验证</option>
+      </select>
+      </td>
+    </tr>
+    <tr>
       <td height="40" colspan="2" align="center"><?php if(!empty($row['option'])) { ?><div id='xxxg'>选项修改&nbsp;<input id='addtable'type="button" value="添加" /></div>
 		<div id='addt'>
 		<?php $i=0;?>
@@ -57,9 +67,10 @@ $('#updateElementSetting').click(function(){
 	var label = $('#label').val();
 	var desc = $('#desc').val();
 	var required = $("#required  option:selected").val();
+	var proving = $("#proving  option:selected").val();
 	$.ajax({
 		type: "POST",
-		url: '/<?php echo Class_Server::getOrgCode();?>/admin/element/edit/id/'+elementid+'/label/'+label+'/required/'+required+'/desc/'+desc+'/option/'+attrValue,
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/element/edit/id/'+elementid+'/label/'+label+'/required/'+required+'/desc/'+desc+'/proving/'+proving+'/option/'+attrValue,
 		success: function(obj) {
 			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin/form/edit/id/<?php echo $row['formId'];?>";
 		}

@@ -83,11 +83,11 @@ class Admin_FormController extends Zend_Controller_Action
 		$formCo = App_Factory::_m('Element');
 		$formDoc = $formCo->create();
 		if($type == 'text' || $type == 'textarea') {
-			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','required'=>0,'desc'=>'标题描述'));
+			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','required'=>0,'proving'=>0,'desc'=>'标题描述'));
 		} else if($type == 'button') {
 			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'提交','type'=>'submit'));
 		} else {
-			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','required'=>0,'desc'=>'标题描述','option'=>array('第一选项','第二选项','第三选项')));
+			$formDoc->setFromArray(array('formId' => $formid,'elementType'=>$type,'label'=>'标题','required'=>0,'proving'=>0,'desc'=>'标题描述','option'=>array('第一选项','第二选项','第三选项')));
 		}
 		$formDoc->save();
 		$this->view->testid = $formDoc->getId();

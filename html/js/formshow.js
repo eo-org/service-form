@@ -23,7 +23,9 @@ $(document).ready(function() {
 					from+= "<input type='text' id='option' name='"+data.label+"'>";
 				} else if(data.elementType == 'radio' || data.elementType == 'select') {
 					$.each(data.option, function(j, val) {
-						from+= "<input id='option"+k+"' type='radio' value='"+val+"' name='"+data.label+"'><label for='option_"+j+"'>"+val+"</label>";
+						from+= "<input id='option"+k+"' type='radio' value='"+val+"' name='"+data.label+"'";
+						if(j == 0){from+= "checked='checked'";}
+						from+= "><label for='option_"+j+"'>"+val+"</label>";
 					});
 				} else if(data.elementType == 'textarea') {
 					from+= "<textarea id='option' name='"+data.label+"' type='textarea'></textarea>";
