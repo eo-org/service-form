@@ -55,6 +55,9 @@ class FeedbackController extends Zend_Controller_Action
 		$arrin['formId'] = $val['id'];
 		$elementCo = App_Factory::_m('Element');
 		$elementDoc = $elementCo->addFilter('formId', $arrin['formId'])->sort('sort', 1)->fetchAll();
+		$isnull = 1;
+		$telephone = 1;
+		$email = 1;
 		foreach ($elementDoc as $f => $arrtwo){
 			if($arrtwo['elementType'] != 'button'){
 				switch($arrtwo['proving']) {
