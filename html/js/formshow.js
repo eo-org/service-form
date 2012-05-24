@@ -1,5 +1,5 @@
-var httpurl = "http://form.eo.test/";
-//var httpurl = "http://form.enorange.cn/";
+//var httpurl = "http://form.eo.test/";
+var httpurl = "http://form.enorange.cn/";
 $(document).ready(function() {
 	var obj = $('#detailform').attr('form-id');
 	var orgcode = $('#detailform').attr('orgcode');
