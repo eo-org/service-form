@@ -94,7 +94,7 @@ class Admin_DataController extends Zend_Controller_Action
 		$this->_helper->template->head('显示列表选择');
 		$formid = $this->getRequest()->getParam('id');
 		$contentCo = App_Factory::_m('Element');
-		$contentDoc = $contentCo->addFilter("formId", $formid)->fetchAll(true);
+		$contentDoc = $contentCo->addFilter("formId", $formid)->sort('sort', 1)->fetchAll(true);
 		$formCo = App_Factory::_m('Form');
 		$formDoc = $formCo->find($formid);
 		if($this->getRequest()->isPost()) {
