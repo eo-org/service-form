@@ -61,18 +61,29 @@ class FeedbackController extends Zend_Controller_Action
 					case 0:
 						break;
 					case 1:
-						$isnull = $proving->isnull($arrin[$arrtwo['label']]);
+						if(!empty($arrin[$arrtwo['label']])){
+							$isnull = $proving->isnull($arrin[$arrtwo['label']]);
+						}else{
+							$isnull = 0;
+						}
 						break;
 					case 2:
-						$telephone = $proving->telephone($arrin[$arrtwo['label']]);
+						if(!empty($arrin[$arrtwo['label']])){
+							$telephone = $proving->telephone($arrin[$arrtwo['label']]);
+						}else{
+							$telephone = 0;
+						}
 						break;
 					case 3:
-						$email = $proving->email($arrin[$arrtwo['label']]);
+						if(!empty($arrin[$arrtwo['label']])){
+							$email = $proving->email($arrin[$arrtwo['label']]);
+						}else{
+							$email = 0;
+						}
 						break;
 				}
 			}
 		}
-
 		echo "<script language='javascript' type='text/javascript'>";
 		if( $isnull == 1 && $telephone == 1 && $email == 1){
 			$formDoc = $formCo->create();
