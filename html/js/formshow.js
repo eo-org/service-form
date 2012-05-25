@@ -10,6 +10,7 @@ $(document).ready(function() {
 		success : function(json)
 		{
 			from+= "<form id='fillform' action='"+httpurl+orgcode+"/default/feedback/reply/id/"+obj+"' method='post'><div class='element-current'><ul class='form-editor'>";
+			//from+= "<form id='fillform' action='' method='post'><div class='element-current'><ul class='form-editor'>";
 			$.each(json, function(k, data){
 				from+= "<li draggable='true' class='solid drag-handle' id='form_element'>";
 				if(data.elementType != 'button') {
@@ -50,4 +51,5 @@ $(document).ready(function() {
 			$('#detailform').html(from);
 		}
 	});
+
 });

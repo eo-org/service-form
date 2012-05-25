@@ -34,6 +34,7 @@ class FeedbackController extends Zend_Controller_Action
 	{
 		$formCo = App_Factory::_m('Content');
 		$val = $this->getRequest()->getParams();
+		//var_export($val);exit;
 		$arrin = array();
 		$http =  $_SERVER["HTTP_REFERER"];
 		$pd = 0;
@@ -59,6 +60,7 @@ class FeedbackController extends Zend_Controller_Action
 		$telephone = 1;
 		$email = 1;
 		$label = '';
+		$arrlabel = array();
 		foreach ($elementDoc as $f => $arrtwo){
 			if($arrtwo['elementType'] != 'button'){
 				switch($arrtwo['proving']) {
@@ -74,6 +76,7 @@ class FeedbackController extends Zend_Controller_Action
 					case 2:
 						if(!empty($arrin[$arrtwo['label']])){
 							$telephone = $proving->telephone($arrin[$arrtwo['label']]);
+							$arrlabel[] = $arrin[$arrtwo['label']];
 						}else{
 							$telephone = 0;
 						}
@@ -93,13 +96,17 @@ class FeedbackController extends Zend_Controller_Action
 			}
 		}
 		if( $isnull == 1 && $telephone == 1 && $email == 1){
-			$formDoc = $formCo->create();
-			$formDoc->setFromArray($arrin);
-			$formDoc->save();
-			$formCo = App_Factory::_m('Form');
-			$formDoc = $formCo->find($arrin['formId']);
-			$returnlanguage = $formDoc->returnlanguage;
-			$this->_helper->viewRenderer->setNoRender(true);
+			if(count($arrlabel) == count(array_unique($arrlabel))){ 
+				$formDoc = $formCo->create();
+				$formDoc->setFromArray($arrin);
+				$formDoc->save();
+				$formCo = App_Factory::_m('Form');
+				$formDoc = $formCo->find($arrin['formId']);
+				$returnlanguage = $formDoc->returnlanguage;
+				$this->_helper->viewRenderer->setNoRender(true);
+			}else{
+				$returnlanguage = "电话号码重复输入,请重新输入！";
+			}
 		}
 		if($isnull == 0){
 			$returnlanguage='不能为空！';
