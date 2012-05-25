@@ -118,7 +118,7 @@ class Admin_DataController extends Zend_Controller_Action
         $currentPage = 1;
         $formid = $this->getRequest()->getParam('id');
 	    $formCo = App_Factory::_m('Content');
-	    $formCo->addFilter("formId", $formid)->sort('_id', 1);
+	    $formCo->addFilter("formId", $formid)->sort('_id', -1);
 		
         $result = array();
         foreach($this->getRequest()->getParams() as $key => $value) {
