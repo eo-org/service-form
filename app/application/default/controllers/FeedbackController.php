@@ -58,6 +58,7 @@ class FeedbackController extends Zend_Controller_Action
 		$isnull = 1;
 		$telephone = 1;
 		$email = 1;
+		$label = '';
 		foreach ($elementDoc as $f => $arrtwo){
 			if($arrtwo['elementType'] != 'button'){
 				switch($arrtwo['proving']) {
@@ -86,6 +87,10 @@ class FeedbackController extends Zend_Controller_Action
 						break;
 				}
 			}
+			if( $isnull == 0 || $telephone == 0 || $email == 0){
+				$label = $arrtwo['label'];
+				break;
+			}
 		}
 		if( $isnull == 1 && $telephone == 1 && $email == 1){
 			$formDoc = $formCo->create();
@@ -97,13 +102,14 @@ class FeedbackController extends Zend_Controller_Action
 			$this->_helper->viewRenderer->setNoRender(true);
 		}
 		if($isnull == 0){
-			$returnlanguage='不能有空值！';
+			$returnlanguage='不能为空！';
 		} else if ($telephone == 0){
-			$returnlanguage='电话号码格式错误！';
+			$returnlanguage='格式错误！';
 		} else if ($email == 0){
-			$returnlanguage='邮箱格式错误！';
+			$returnlanguage='格式错误！';
 		}
-		$this->view->returnlanguage = $returnlanguage;
+		$this->view->label = $label;
+		$this->view->returnlanguage = $label.$returnlanguage;
 		$this->view->http = $http;
 		$this->render('reply');
 		//exit;
