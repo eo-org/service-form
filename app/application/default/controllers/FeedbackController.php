@@ -87,7 +87,6 @@ class FeedbackController extends Zend_Controller_Action
 				}
 			}
 		}
-		echo "<script language='javascript' type='text/javascript'>";
 		if( $isnull == 1 && $telephone == 1 && $email == 1){
 			$formDoc = $formCo->create();
 			$formDoc->setFromArray($arrin);
@@ -104,14 +103,15 @@ class FeedbackController extends Zend_Controller_Action
 		} else if ($email == 0){
 			$returnlanguage='邮箱格式错误！';
 		}
-		echo "alert('".$returnlanguage."');";
-		echo "window.location.href='$http'";
-		echo "</script>";
-		exit;
+		$this->view->returnlanguage = $returnlanguage;
+		$this->view->http = $http;
+		$this->render('reply');
+		//exit;
 	}
 	
 	public function deleteAction()
 	{
+		
 		$this->getResponse()->appendBody('called from delete action');
 		exit;
 	}

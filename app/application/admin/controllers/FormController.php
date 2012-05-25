@@ -134,6 +134,7 @@ class Admin_FormController extends Zend_Controller_Action
     	$currentPage = 1;
     	$formCo = App_Factory::_m('Form');
     	$formCo->addFilter("orgCode", Class_Server::getOrgCode());
+    	$formCo->sort('_id', -1);
     
     	$result = array();
     	foreach($this->getRequest()->getParams() as $key => $value) {

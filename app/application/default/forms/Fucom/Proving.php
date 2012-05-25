@@ -12,6 +12,7 @@ class Form_Fucom_Proving
     
     public function telephone($string)
     {
+    	echo $string;exit;
     	$arrid = explode("-",$string);
 //     	if (count($arrid)>1){
 //     		return (preg_match("/^(((d{3}))|(d{3}-))?((0d{2,3})|0d{2,3}-)?[1-9]d{6,8}$/",$string))?1:0;
