@@ -5,19 +5,6 @@ class Admin_DataController extends Zend_Controller_Action
 	{
 		$this->_helper->template->head('数据列表');
 		$formid = $this->getRequest()->getParam('id');
-// 		$contentCo = App_Factory::_m('Element');
-// 		$contentDoc = $contentCo->addFilter("formId", $formid)->fetchAll(true);
-// 		$first = '';
-// 		foreach ($contentDoc as $f => $num){
-// 			if (array_key_exists("sort",$num)){
-// 				if($num['sort'] == 1){
-// 					$first = $num['label'];
-// 				}
-// 			} else {
-// 				$first = $contentDoc[0]['label'];
-// 				break;
-// 			}
-// 		}
 		$formCo = App_Factory::_m('Form');
 		$formDoc = $formCo->find($formid);
 		$form = $formDoc->toArray();
@@ -118,7 +105,7 @@ class Admin_DataController extends Zend_Controller_Action
         $currentPage = 1;
         $formid = $this->getRequest()->getParam('id');
 	    $formCo = App_Factory::_m('Content');
-	    $formCo->addFilter("formId", $formid)->sort('_id', -1);
+	    $formCo->addFilter("formId", $formid)->sort('_id', 1);
 		
         $result = array();
         foreach($this->getRequest()->getParams() as $key => $value) {

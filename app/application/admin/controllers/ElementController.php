@@ -17,16 +17,20 @@ class Admin_ElementController extends Zend_Controller_Action
 			$desc = $this->getRequest()->getParam('desc');
 			$optionval = $this->getRequest()->getParam('option');
 			$proving = $this->getRequest()->getParam('proving');
-			$arroption = array();
+			$arrproving = array();
+			$arrone = explode(":", $proving);
+			for($i=0;$i<count($arrone)-1;$i++){
+				$arrproving[] = $arrone[$i];
+			}
 			if($optionval == '0'){
-				$row->setFromArray(array('desc'=>$desc,'required'=>$required,'label'=>$label,'proving'=>$proving));
+				$row->setFromArray(array('desc'=>$desc,'required'=>$required,'label'=>$label,'proving'=>$arrproving));
 			} else {
 				$arrbox = explode(":", $optionval);
 				$arroption = array();
 				for($i=0;$i<count($arrbox)-1;$i++){
 					$arroption[] = $arrbox[$i];
 				}
-				$row->setFromArray(array('option'=>$arroption,'desc'=>$desc,'required'=>$required,'label'=>$label,'proving'=>$proving));
+				$row->setFromArray(array('option'=>$arroption,'desc'=>$desc,'required'=>$required,'label'=>$label,'proving'=>$arrproving));
 			}
 			$row->save();
 		}

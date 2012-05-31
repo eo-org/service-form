@@ -20,6 +20,7 @@ class Form_Fucom_Proving
 //     	}
 		if(count($arrid)>1){
 	    	if(preg_match("/^\d*$/",$arrid[0])&&preg_match("/^\d*$/",$arrid[1])){
+
 	    		return 1;
 	    	}else{
 	    		return 0;
@@ -36,5 +37,18 @@ class Form_Fucom_Proving
     public function email($string)
     {
     	return preg_match("/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/", $string); 
+    }
+    
+    public function only($condition,$string)
+    {
+    	$contentCo = App_Factory::_m('Content');
+    	$contentDoc = $contentCo->addFilter($condition, $string)->fetchOne();
+//     	Zend_Debug::dump($contentDoc);
+    	if(is_null($contentDoc)){
+    		return 1;	
+    	} else {
+    		return 0;
+    		
+    	} 
     }
 }

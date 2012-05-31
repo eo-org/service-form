@@ -20,12 +20,12 @@
     </tr>
     <tr>
     <td height="40" align="right">验证方式：</td>
-      <td><select name="select" id="proving">
-        <option <?php if($row['proving']==0){echo "selected='selected'";}?> value='0'>无</option>
-        <option <?php if($row['proving']==1){echo "selected='selected'";}?> value='1'>非空验证</option>
-        <option <?php if($row['proving']==2){echo "selected='selected'";}?> value='2'>电话验证</option>
-        <option <?php if($row['proving']==3){echo "selected='selected'";}?> value='3'>邮箱验证</option>
-      </select>
+      <td>
+        <input name="proving" type="checkbox" id='proving0' value='0'>无
+        <input name="proving" type="checkbox" id='proving1' value='1'>非空验证
+        <input name="proving" type="checkbox" id='proving2' value='2'>电话验证
+        <input name="proving" type="checkbox" id='proving3' value='3'>邮箱验证
+        <input name="proving" type="checkbox" id='proving4' value='4'>唯一验证
       </td>
     </tr>
     <tr>
@@ -43,6 +43,12 @@
     </tr>
   </table>
 <script type="text/javascript">
+<?php //var_export($row['proving']);?>
+$(document).ready(function() {
+	<?php if(!empty($row['proving'])){foreach ($row['proving'] as $num => $arrone){ ?>
+		$('#proving<?php echo $arrone?>').attr('checked','checked');
+	<?php }} ?>
+});
 var i=5;
 $('#addtable').click(function(){
 	i++;
@@ -54,6 +60,11 @@ $('#deloption').live("click",function(){
 	$("#"+s).remove();
 });
 $('#updateElementSetting').click(function(){
+	var checkvalue ='';
+	$("input[name='proving']:checked").each(function(i){        
+		var value = $(this).val();
+		checkvalue+= value + ':';
+ 	}); 
 	var attrValue="";
 	<?php if(!empty($row['option'])) { ?>
 		$("#addt :input:text").each(function(){
@@ -67,10 +78,9 @@ $('#updateElementSetting').click(function(){
 	var label = $('#label').val();
 	var desc = $('#desc').val();
 	var required = $("#required  option:selected").val();
-	var proving = $("#proving  option:selected").val();
 	$.ajax({
 		type: "POST",
-		url: '/<?php echo Class_Server::getOrgCode();?>/admin/element/edit/id/'+elementid+'/label/'+label+'/required/'+required+'/desc/'+desc+'/proving/'+proving+'/option/'+attrValue,
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/element/edit/id/'+elementid+'/label/'+label+'/required/'+required+'/desc/'+desc+'/proving/'+checkvalue+'/option/'+attrValue,
 		success: function(obj) {
 			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin/form/edit/id/<?php echo $row['formId'];?>";
 		}
