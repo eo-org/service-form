@@ -10,7 +10,6 @@ $(document).ready(function() {
 		success : function(json)
 		{
 			from+= "<form id='fillform' action='"+httpurl+orgcode+"/default/feedback/reply/id/"+obj+"' method='post'><div class='element-current'><ul class='form-editor'>";
-			//from+= "<div class='element-current'><ul class='form-editor'>";
 			$.each(json, function(k, data){
 				from+= "<li draggable='true' class='solid drag-handle' id='form_element'>";
 				if(data.elementType != 'button') {
@@ -48,37 +47,8 @@ $(document).ready(function() {
 				}
 			});
 			from+="</ul></div>";
-			$('#fillform').html(from);			
+			$('#detailform').html(from);			
 		}
 	});
-//	var options = { 
-//			target:        '#output',
-//			url :	httpurl+orgcode+"/default/feedback/reply/id/"+obj,
-//			type : "POST",
-//			dataType: "josnp",         
-//	        clearForm: true,       
-//	        resetForm: true  
-//		};
-//	$('#fillform').ajaxForm(options); 
-//	$('#fillform').submit(function(){ 
-////		alert($('#fillform').serialize());
-//		//$.getjson(httpurl+orgcode+"/default/feedback/reply/id/"+obj+"?"+$('#fillform').serialize());
-//		$.getJSON(httpurl+orgcode+"/default/feedback/reply/id/"+obj+"?callback=?",$('#fillform').serialize(),function(json){ 
-//			$.each(json, function(k, data){
-//				alert(data);
-//				alert(data.message);
-//			});	
-//		});
-//		return false;	
-//	});
 });
-//$(document).ready(function() {
-//	alert(1);
-//	var options = { 
-//			url :	httpurl+orgcode+"/default/feedback/reply/id/"+obj,
-//			type : "POST",
-//		};
-//		$('#fillform').ajaxForm(function(){
-//			alert(1);
-//		}); 	
-//})
+
