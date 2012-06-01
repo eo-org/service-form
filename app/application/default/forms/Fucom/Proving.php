@@ -20,7 +20,6 @@ class Form_Fucom_Proving
 //     	}
 		if(count($arrid)>1){
 	    	if(preg_match("/^\d*$/",$arrid[0])&&preg_match("/^\d*$/",$arrid[1])){
-
 	    		return 1;
 	    	}else{
 	    		return 0;

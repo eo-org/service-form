@@ -142,7 +142,7 @@ class Admin_FormController extends Zend_Controller_Action
     			$field = substr($key, 7);
     			switch($field) {
     				case 'formName':
-    					$productCo->addFilter('formName', new MongoRegex("/^".$value."/"));
+    					$formCo->addFilter('formName', new MongoRegex("/^".$value."/"));
     					break;
     				case 'page':
     					if(intval($value) != 0) {

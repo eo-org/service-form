@@ -34,8 +34,6 @@ class FeedbackController extends Zend_Controller_Action
 	{
 		$formCo = App_Factory::_m('Content');
 		$val = $this->getRequest()->getParams();
-// 		$callback = $val['callback'];
-		//var_export($val);exit;
 		$arrin = array();
 		$http =  $_SERVER["HTTP_REFERER"];
 		$pd = 0;
@@ -111,6 +109,7 @@ class FeedbackController extends Zend_Controller_Action
 		}
 		if( $isnull == 1 && $telephone == 1 && $email == 1 && $only == 1){
 			if(count($arrlabel) == count(array_unique($arrlabel))){ 
+				$arrin['deal'] = '新加';
 				$formDoc = $formCo->create();
 				$formDoc->setFromArray($arrin);
 				$formDoc->save();

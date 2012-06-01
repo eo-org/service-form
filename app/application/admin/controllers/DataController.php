@@ -14,7 +14,7 @@ class Admin_DataController extends Zend_Controller_Action
 		foreach ($form['deal'] as $m => $arrone){
 			$arrdeal[$arrone] = $arrone;
 		}
-		$arrdeal['undefined'] = '新加';
+		$arrdeal['新加'] = '新加';
 		if(empty($form['showlist'])){
 			$this->_redirect(Class_Server::getOrgCode().'/admin/data/showlist/id/'.$formid);
 		}
@@ -81,7 +81,7 @@ class Admin_DataController extends Zend_Controller_Action
 		$this->_helper->template->head('显示列表选择');
 		$formid = $this->getRequest()->getParam('id');
 		$contentCo = App_Factory::_m('Element');
-		$contentDoc = $contentCo->addFilter("formId", $formid)->sort('sort', 1)->fetchAll(true);
+		$contentDoc = $contentCo->addFilter("formId", $formid)->sort('sort',1)->fetchAll(true);
 		$formCo = App_Factory::_m('Form');
 		$formDoc = $formCo->find($formid);
 		if($this->getRequest()->isPost()) {
@@ -104,30 +104,31 @@ class Admin_DataController extends Zend_Controller_Action
         $pageSize = 20;
         $currentPage = 1;
         $formid = $this->getRequest()->getParam('id');
-	    $formCo = App_Factory::_m('Content');
-	    $formCo->addFilter("formId", $formid)->sort('_id', 1);
-		
+        $formCo = App_Factory::_m('Form');
+        $formDoc = $formCo->find($formid);
+        $form = $formDoc->toArray();
+        
+	    $ContentCo = App_Factory::_m('Content');
+	    $ContentCo->addFilter("formId", $formid)->sort('_id', -1);
+// 		var_export($this->getRequest()->getParams());exit;
         $result = array();
         foreach($this->getRequest()->getParams() as $key => $value) {
             if(substr($key, 0 , 7) == 'filter_') {
                 $field = substr($key, 7);
-                switch($field) {
-                     case 'deal':
-                    	$productCo->addFilter('deal', new MongoRegex("/^".$value."/"));
-                		break;
-                    case 'page':
-            			if(intval($value) != 0) {
-            				$currentPage = $value;
-            			}
-                        $result['currentPage'] = intval($value);
-            		    break;
+                if ($field != 'page'){
+                   	$ContentCo->addFilter($field, new MongoRegex("/^".$value."/"));
+                } else {
+            		if(intval($value) != 0) {
+            			$currentPage = $value;
+            		}
+                    $result['currentPage'] = intval($value);
                 }
             }
         }
 
-        $formCo->setPage($currentPage)->setPageSize($pageSize);
-		$data = $formCo->fetchAll(true);
-		$dataSize = $formCo->count();
+        $ContentCo->setPage($currentPage)->setPageSize($pageSize);
+		$data = $ContentCo->fetchAll(true);
+		$dataSize = $ContentCo->count();
 
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
