@@ -11,11 +11,12 @@ $(document).ready(function() {
 		{
 			from+= "<form id='fillform' action='"+httpurl+orgcode+"/default/feedback/reply/id/"+obj+"' method='post'><div class='element-current'><ul class='form-editor'>";
 			$.each(json, function(k, data){
-				from+= "<li draggable='true' class='solid drag-handle' id='form_element'>";
+				from+= "<li draggable='true' class='solid drag-handle' id='form_element_"+k+"'>";
+				from+= "<div class='element-elementType'>";
 				if(data.elementType != 'button') {
-					from+= "<div class='element-label'>"+data.label;
+					from+= data.label;
 					if(data.required == 1){
-						from+="<font color='#f00'>(必填)</font>";
+						from+= "<font color='#f00'>(必填)</font>";
 					}
 					from+= "</div><div class='element'>";
 				}
