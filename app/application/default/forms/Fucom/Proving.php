@@ -35,7 +35,8 @@ class Form_Fucom_Proving
     
     public function email($string)
     {
-    	return preg_match("/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/", $string); 
+       $reg = preg_match("/^[0-9a-zA-Z]+(?:[\_\-][a-z0-9\-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+$/i",$string);
+       return $reg;	
     }
     
     public function only($condition,$string)
