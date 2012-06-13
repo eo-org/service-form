@@ -88,6 +88,7 @@ class FeedbackController extends Zend_Controller_Action
 						case 3:
 							if(!empty($arrin[$arrtwo['label']])){
 								$email = $proving->email($arrin[$arrtwo['label']]);
+								echo $email;								
 							}else{
 								$email = 0;
 							}
@@ -107,6 +108,7 @@ class FeedbackController extends Zend_Controller_Action
 				}
 			}
 		}
+		exit;
 		if( $isnull == 1 && $telephone == 1 && $email == 1 && $only == 1){
 			if(count($arrlabel) == count(array_unique($arrlabel))){ 
 				$arrin['deal'] = '新加';
