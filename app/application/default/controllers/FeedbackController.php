@@ -87,8 +87,7 @@ class FeedbackController extends Zend_Controller_Action
 							break;
 						case 3:
 							if(!empty($arrin[$arrtwo['label']])){
-								$email = $proving->email($arrin[$arrtwo['label']]);
-								echo $email;								
+								$email = $proving->email($arrin[$arrtwo['label']]);								
 							}else{
 								$email = 0;
 							}
