@@ -29,6 +29,11 @@
       </td>
     </tr>
     <tr>
+      <td height="40" align="right">CSS名称：</td>
+      <td><input type="text" name="cssname" id="cssname" value="<?php echo !empty($row['cssname'])?$row['cssname']:null;?>" /></td>
+    </tr>
+    <tr>
+    <tr>
       <td height="40" colspan="2" align="center"><?php if(!empty($row['option'])) { ?><div id='xxxg'>选项修改&nbsp;<input id='addtable'type="button" value="添加" /></div>
 		<div id='addt'>
 		<?php $i=0;?>
@@ -63,12 +68,15 @@ $('#updateElementSetting').click(function(){
 	var checkvalue ='';
 	$("input[name='proving']:checked").each(function(i){        
 		var value = $(this).val();
-		checkvalue+= value + ':';
+		//value = value.replace("/","\\");
+		checkvalue+= value + ':';		
  	}); 
+	checkvalue = checkvalue == ''?0:checkvalue;
 	var attrValue="";
 	<?php if(!empty($row['option'])) { ?>
 		$("#addt :input:text").each(function(){
 			var value = $(this).attr("value");
+			//value = value.replace("/","\\");
 			attrValue+= value + ':';
 		});
 	<?php } else { ?>
@@ -76,11 +84,17 @@ $('#updateElementSetting').click(function(){
 	<?php }?>
 	var elementid = $('#elementid').val();
 	var label = $('#label').val();
+	//label = label.replace("\\","\\\\");
+//	alert(aa);.replace("/","&frasl;")
+	//alert(label);return false;
 	var desc = $('#desc').val();
+	var cssname = $('#cssname').val();
+	cssname = cssname == ''?0:cssname;
 	var required = $("#required  option:selected").val();
 	$.ajax({
 		type: "POST",
-		url: '/<?php echo Class_Server::getOrgCode();?>/admin/element/edit/id/'+elementid+'/label/'+label+'/required/'+required+'/desc/'+desc+'/proving/'+checkvalue+'/option/'+attrValue,
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/element/edit/id/'+elementid,
+		data: 'label='+label+'&required='+required+'&desc='+desc+'&proving='+checkvalue+'&cssname'+cssname+'&option='+attrValue,
 		success: function(obj) {
 			location.href = "/<?php echo Class_Server::getOrgCode();?>/admin/form/edit/id/<?php echo $row['formId'];?>";
 		}

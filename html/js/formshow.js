@@ -11,7 +11,11 @@ $(document).ready(function() {
 		{
 			from+= "<form id='fillform' action='"+httpurl+orgcode+"/default/feedback/reply/id/"+obj+"' method='post'><div class='element-current'><ul class='form-editor'>";
 			$.each(json, function(k, data){
-				from+= "<li draggable='true' class='solid drag-handle' id='form_element_"+k+"'>";
+				from+= "<li draggable='true'";
+				if(data.cssname){
+					from+= "class='"+data.cssname+"'";
+				}
+				from+= "id='form_element_"+k+"'>";
 				from+= "<div class='element-elementType'>";
 				if(data.elementType != 'button') {
 					from+= data.label;
@@ -26,7 +30,7 @@ $(document).ready(function() {
 					$.each(data.option, function(j, val) {
 						from+= "<input id='option"+k+"' type='radio' value='"+val+"' name='"+data.label+"'";
 						if(j == 0){from+= "checked='checked'";}
-						from+= "><label for='option_"+j+"'>"+val+"</label>";
+						from+= "><label class='option_"+j+"'>"+val+"</label>";
 					});
 				} else if(data.elementType == 'textarea') {
 					from+= "<textarea id='option' name='"+data.label+"' type='textarea'></textarea>";
