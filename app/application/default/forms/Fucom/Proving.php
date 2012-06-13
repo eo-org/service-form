@@ -36,8 +36,6 @@ class Form_Fucom_Proving
     public function email($string)
     {
        $reg = preg_match("/^[0-9a-zA-Z]+(?:[\_\-][a-z0-9\-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+$/i",$string);
-       echo '123'."<br/>";
-       echo $reg;exit;
        return $reg;	
     }
     
