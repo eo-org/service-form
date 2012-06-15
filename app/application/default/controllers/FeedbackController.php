@@ -1,5 +1,6 @@
 <?php
 require CONTAINER_PATH.'/app/application/default/forms/Fucom/Proving.php';
+
 class FeedbackController extends Zend_Controller_Action
 {
 	public function init()
@@ -13,26 +14,10 @@ class FeedbackController extends Zend_Controller_Action
 	
 	public function getAction()
 	{
-		$id = $this->getRequest()->getParam('id');
-		
-		$tb = Class_Base::_('Element');
-		$rowset = $tb->fetchAll($tb->select()
-			->from($tb, array('id', 'elementType', 'name', 'label', 'required', 'desc'))
-			->where('formId = ?', $id)
-			->order('preId')
-		);
-		foreach($rowset as $r) {
-			$r->loadOptions();
-		}
-		$json = Zend_Json_Encoder::encode($rowset->toArray());
-		
-		$callback = $this->getRequest()->getParam('callback');
-		$this->getResponse()->appendBody($callback.'('.$json.')');
 	}
 	
 	public function replyAction()
 	{
-		$formCo = App_Factory::_m('Content');
 		$val = $this->getRequest()->getParams();
 		$arrin = array();
 		$http =  $_SERVER["HTTP_REFERER"];
@@ -61,40 +46,46 @@ class FeedbackController extends Zend_Controller_Action
 		$only = 1;
 		$label = '';
 		$arrlabel = array();
+		$ContentCo = App_Factory::_m('Content');
+		$ContentDoc = $ContentCo->create();
+		$ContentDoc->formId = $arrin['formId'];
+		$arrcontent = array();
 		foreach ($elementDoc as $f => $arrtwo){
 			if( $isnull == 0 || $telephone == 0 || $email == 0 || $only == 0){
 				break;
 			}
 			if($arrtwo['elementType'] != 'button'){
+				$ContentDoc->$f = $arrin[$f];
+				$arrcontent[$arrtwo['label']] = $arrin[$f];
 				foreach($arrtwo['proving'] as $m => $arrthree){
 					switch($arrthree) {
 						case 0:
 							break;
 						case 1:
-							if(!empty($arrin[$arrtwo['label']])){
-								$isnull = $proving->isnull($arrin[$arrtwo['label']]);
+							if(!empty($arrin[$f])){
+								$isnull = $proving->isnull($arrin[$f]);
 							}else{
 								$isnull = 0;
 							}
 							break;
 						case 2:
-							if(!empty($arrin[$arrtwo['label']])){
-								$telephone = $proving->telephone($arrin[$arrtwo['label']]);
-								$arrlabel[] = $arrin[$arrtwo['label']];
+							if(!empty($arrin[$f])){
+								$telephone = $proving->telephone($arrin[$f]);
+								$arrlabel[] = $arrin[$f];
 							}else{
 								$telephone = 0;
 							}
 							break;
 						case 3:
-							if(!empty($arrin[$arrtwo['label']])){
-								$email = $proving->email($arrin[$arrtwo['label']]);								
+							if(!empty($arrin[$f])){
+								$email = $proving->email($arrin[$f]);								
 							}else{
 								$email = 0;
 							}
 							break;
 						case 4:
-							if(!empty($arrin[$arrtwo['label']])){
-								$only = $proving->only($arrtwo['label'],$arrin[$arrtwo['label']]);
+							if(!empty($arrin[$f])){
+								$only = $proving->only($arrtwo['label'],$arrin[$f]);
 							}else{
 								$only = 0;
 							}
@@ -109,10 +100,11 @@ class FeedbackController extends Zend_Controller_Action
 		}
 		if( $isnull == 1 && $telephone == 1 && $email == 1 && $only == 1){
 			if(count($arrlabel) == count(array_unique($arrlabel))){ 
-				$arrin['deal'] = '新加';
-				$formDoc = $formCo->create();
-				$formDoc->setFromArray($arrin);
-				$formDoc->save();
+				$arrcontent['deal'] = '新加';
+				$ContentDoc->contentvalue = $arrcontent;
+// 				$ContentDoc->setFromArray($arrcontent);
+				$ContentDoc->save();
+				
 				$formCo = App_Factory::_m('Form');
 				$formDoc = $formCo->find($arrin['formId']);
 				$returnlanguage = $formDoc->returnlanguage;

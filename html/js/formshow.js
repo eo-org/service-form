@@ -25,21 +25,21 @@ $(document).ready(function() {
 					from+= "</div><div class='element'>";
 				}
 				if (data.elementType == 'text') {
-					from+= "<input type='text' id='option' name='"+data.label+"'>";
+					from+= "<input type='text' id='option' name='"+data._id['$id']+"'>";
 				} else if(data.elementType == 'radio' || data.elementType == 'select') {
 					$.each(data.option, function(j, val) {
-						from+= "<input id='option"+k+"' type='radio' value='"+val+"' name='"+data.label+"'";
+						from+= "<input id='option"+k+"' type='radio' value='"+val+"' name='"+data._id['$id']+"'";
 						if(j == 0){from+= "checked='checked'";}
 						from+= "><label class='option_"+j+"'>"+val+"</label>";
 					});
 				} else if(data.elementType == 'textarea') {
-					from+= "<textarea id='option' name='"+data.label+"' type='textarea'></textarea>";
+					from+= "<textarea id='option' name='"+data._id['$id']+"' type='textarea'></textarea>";
 				} else if(data.elementType == 'multi-checkbox') {
 					$.each(data.option, function(j, val) {
-						from+= "<input id='option_"+k+"' type='checkbox' value='"+j+"' name='"+data.label+"_"+j+"_"+val+"'><label for='option_"+j+"'>"+val+"</label>";
+						from+= "<input id='option_"+k+"' type='checkbox' value='"+j+"' name='"+data._id['$id']+"_"+j+"_"+val+"'><label for='option_"+j+"'>"+val+"</label>";
 					});
 				} else if(data.elementType == 'menu'){
-					from+= "<select id='select' name='"+data.label+"'>";
+					from+= "<select id='select' name='"+data._id['$id']+"'>";
 					$.each(data.option, function(j, val) {
 						from+= "<option value='"+val+"'>"+val+"</option>";
 					});

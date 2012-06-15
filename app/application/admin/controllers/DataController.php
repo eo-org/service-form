@@ -129,8 +129,11 @@ class Admin_DataController extends Zend_Controller_Action
         $ContentCo->setPage($currentPage)->setPageSize($pageSize);
 		$data = $ContentCo->fetchAll(true);
 		$dataSize = $ContentCo->count();
-
-		$result['data'] = $data;
+		$returndata = array();
+		foreach ($data as $m => $v){
+			$returndata[] = $v['contentvalue'];
+		}
+		$result['data'] = $returndata;
         $result['dataSize'] = $dataSize;
         $result['pageSize'] = $pageSize;
         $result['currentPage'] = $currentPage;
