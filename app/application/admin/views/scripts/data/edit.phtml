@@ -2,7 +2,7 @@
 <a class="action-menu" id="updateContentSetting" href="">保存</a>
 <br /><br />
 <ul>
-<?php foreach($row as $num => $arrone){ ?>
+<?php foreach($row['contentvalue'] as $num => $arrone){ ?>
 		<?php if($num != 'orgCode' && $num != 'formId' && $num != 'deal'){?>
 		<li><?php echo $num."：".$arrone;?></li><br />
 <?php } } ?>
