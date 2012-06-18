@@ -56,7 +56,9 @@ class Admin_DataController extends Zend_Controller_Action
 		$formDoc = $formCo->find($formId);
 		if($this->getRequest()->isPost()) {
 			$deal = $this->getRequest()->getParam('deal');
-			$contentDoc->setFromArray(array('deal' => $deal));
+			$arrup = $contentDoc->contentvalue;
+			$arrup['deal'] = $deal;
+			$contentDoc->contentvalue = $arrup;
 			$contentDoc->save();
 		}
 		$this->view->formElementList = $contentDoc;

@@ -9,7 +9,7 @@
 <li> 操作：
 <select name="deal" id="deal">
 <?php foreach($form['deal'] as $num => $arrtwo){ ?>
-  <option value='<?php echo $arrtwo;?>' <?php if(!empty($row['deal'])){if($row['deal']==$arrtwo){echo "selected='selected'";}}?>><?php echo $arrtwo;?></option>
+  <option value='<?php echo $arrtwo;?>' <?php if(!empty($row['contentvalue']['deal'])){if($row['contentvalue']['deal']==$arrtwo){echo "selected='selected'";}}?>><?php echo $arrtwo;?></option>
   <?php }?>
 </select>
 </li>
