@@ -15,7 +15,38 @@ class FeedbackController extends Zend_Controller_Action
 	public function getAction()
 	{
 	}
+	public function rtestAction()
+	{
+		require CONTAINER_PATH.'/app/application/default/forms/Fucom/Reply.php';
+		$val = $this->getRequest()->getParams();
+		$form = new Form_Fucom_Reply($val['id']);
 	
+		foreach ($val as $num => $arrone){
+			if($num != 'module' && $num != 'controller' && $num != 'action' && $num != 'button' && $num != 'id' && $num != 'orgCode' && $num != 'callback'){
+				$arrid = explode("_",$num);
+				if(isset($arrid[1])){
+					if(isset($arrid[2])){
+						$arrin[$arrid[0]][] = end($arrid);
+					} else {
+						$arrin[$arrid[0]] = $arrid[1];
+					}
+				} else {
+					$arrin[$arrid[0]] = $arrone;
+				}
+			}
+		}
+		Zend_Debug::dump($form->isValid($arrin));
+		if($form->isValid($arrin)){
+			$arrvai = array();
+			foreach ($arrin as $arr_id => $arrValue){
+				$elementCo = App_Factory::_m('Element');
+				$elementDoc = $elementCo->find($arr_id)->toArray();
+				$arrvai[$elementDoc['label']] = $arrValue;
+			}
+		}
+		echo $form;
+		exit;
+	}
 	public function replyAction()
 	{
 		$val = $this->getRequest()->getParams();
@@ -101,9 +132,10 @@ class FeedbackController extends Zend_Controller_Action
 		if( $isnull == 1 && $telephone == 1 && $email == 1 && $only == 1){
 			if(count($arrlabel) == count(array_unique($arrlabel))){ 
 				$arrcontent['deal'] = '新加';
+				$arrcontent['时间'] = date("Y-m-d H:i:s");
 				$ContentDoc->contentvalue = $arrcontent;
-// 				$ContentDoc->setFromArray($arrcontent);
 				$ContentDoc->save();
+				
 				
 				$formCo = App_Factory::_m('Form');
 				$formDoc = $formCo->find($arrin['formId']);
