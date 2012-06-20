@@ -19,7 +19,8 @@ class Admin_DataController extends Zend_Controller_Action
 			$this->_redirect(Class_Server::getOrgCode().'/admin/data/showlist/id/'.$formid);
 		}
 		foreach ($form['showlist'] as $n => $arrtwo){
-			$arrshowlist[$arrtwo] = $arrtwo;
+			
+			$arrshowlist[$n] = $arrtwo;
 		}
 		$arrshowlist['deal'] = '处理';
 		$arrshowlist['~contextMenu'] = '';
@@ -89,9 +90,10 @@ class Admin_DataController extends Zend_Controller_Action
 		if($this->getRequest()->isPost()) {
 			$val = $this->getRequest()->getParam('val');
 			$arroption = array();
-			$arrbox = explode(":", $val);
-			for($i=0;$i<count($arrbox)-1;$i++){
-				$arroption[] = $arrbox[$i];
+			$arrbox = explode("#*#", $val);
+			for($i=0;$i<count($arrbox)-2;$i++){
+					$arroption[$arrbox[$i]] = $arrbox[$i+1];
+					$i++;
 			}
 			$formDoc->setFromArray(array('showlist' => $arroption));
 			$formDoc->save();
@@ -106,9 +108,6 @@ class Admin_DataController extends Zend_Controller_Action
         $pageSize = 20;
         $currentPage = 1;
         $formid = $this->getRequest()->getParam('id');
-        $formCo = App_Factory::_m('Form');
-        $formDoc = $formCo->find($formid);
-        $form = $formDoc->toArray();
         
 	    $ContentCo = App_Factory::_m('Content');
 	    $ContentCo->addFilter("formId", $formid)->sort('_id', -1);
@@ -137,7 +136,8 @@ class Admin_DataController extends Zend_Controller_Action
 			//array_push($returndata[$m],array('id'=>$v['id']));
 			$returndata[$m] = array_merge($v['contentvalue'],array('id'=>$v['id']));
 		}
-		$result['data'] = $returndata;
+// 		var_export($returndata);exit;
+		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
         $result['pageSize'] = $pageSize;
         $result['currentPage'] = $currentPage;

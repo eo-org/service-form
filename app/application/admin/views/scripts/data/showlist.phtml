@@ -7,12 +7,12 @@
 		if($arrone['elementType'] != 'button'){
 ?>
 <li>
-<input type="checkbox" value="<?php echo $arrone['label'];?>" name='checkbox'  id="<?php echo $arrone['label'];?>" >
+<input type="checkbox" value="<?php echo $arrone['label'];?>" name='checkbox'  id="<?php echo $arrone['id'];?>" >
 <?php echo $arrone['label'];?>
 </li>
 <?php }}?>
-<input type="checkbox" value="时间" name='checkbox'  id="时间" >
-时间
+<input type="checkbox" value="datatime" name='checkbox'  id="datatime" >
+datatime
 </li>
 </ul>
 <script type='text/javascript'>
@@ -21,7 +21,7 @@ $(document).ready(function(){
 		if(!empty($form['showlist'])){ 
  			$showlist = $form['showlist'];
 	 		foreach($showlist as $n => $arrtwo){?>
-			$('#<?php echo $arrtwo;?>').attr("checked","checked");
+			$('#<?php echo $n;?>').attr("checked","checked");
 	<?php }}else{?>
 		alert('请勾选列表显示列！');
 	<?php }?>
@@ -29,7 +29,7 @@ $(document).ready(function(){
 $('#saveshowlist').click(function(){
 	var isCheck = '';
 	$(":input:checkbox[name='checkbox']:checked").each(function() { 
-		isCheck+= this.value+':'; 
+		isCheck+= this.id+'#*#'+this.value+'#*#'; 
 		});
 	$.ajax({
 		type: "POST",

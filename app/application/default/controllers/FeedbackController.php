@@ -133,6 +133,8 @@ class FeedbackController extends Zend_Controller_Action
 			if(count($arrlabel) == count(array_unique($arrlabel))){ 
 				$arrcontent['deal'] = '新加';
 				$arrcontent['时间'] = date("Y-m-d H:i:s");
+				$ContentDoc->deal = '新加';
+				$ContentDoc->datatime = date("Y-m-d H:i:s");
 				$ContentDoc->contentvalue = $arrcontent;
 				$ContentDoc->save();
 				
