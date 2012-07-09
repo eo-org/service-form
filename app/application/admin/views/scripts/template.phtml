@@ -1,10 +1,13 @@
 <?php
 $naviArr = array(
-	array(
-		'orgCode' => Class_Server::getOrgCode(),
-		'controllerName' => 'admin/',
-		'title' => '表单管理'
-	)
+				array(
+					'orgCode' => Class_Server::getOrgCode(),
+					'moduleName' => 'admin/index/',
+					'title' => '表单管理'),
+				array(
+					'orgCode' => Class_Server::getOrgCode(),
+					'moduleName' => 'admin/index/create',
+					'title' => '表单创建'),
 );
 
 //$request = Zend_Controller_Front::getInstance()->getRequest();
@@ -17,8 +20,8 @@ $naviArr = array(
 </head>
 
 <body>
-	<?php echo $this->extension('Navi', $naviArr) ?>
-	
+
+	<div id='top'><?php echo $this->extension('Navi', $naviArr); ?></div>
 	<div class='head-desc'>
 		<?php echo $this->head?>
 	</div>

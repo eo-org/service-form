@@ -49,6 +49,7 @@ class Admin_DataController extends Zend_Controller_Action
 
 	public function editAction()
 	{
+		$this->_helper->template->head('数据操作页面');
 		$contentid = $this->getRequest()->getParam('id');
 		$contentCo = App_Factory::_m('Content');
 		$contentDoc = $contentCo->find($contentid);
@@ -105,7 +106,7 @@ class Admin_DataController extends Zend_Controller_Action
 
 	public function getFormJsonAction()
     {
-        $pageSize = 20;
+        $pageSize = 5;
         $currentPage = 1;
         $formid = $this->getRequest()->getParam('id');
         

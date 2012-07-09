@@ -1,23 +1,72 @@
-<div class='element-library'>
-	<div class='element-library-item drag-handle' draggable='true' element-type='text'>
-		输入框
+<style>
+.attribute-library {
+	width: 350px;
+	border-radius: 4px;
+	background: #eee;
+	padding: 25px;
+	margin: 15px;
+	position: fixed; 
+}
+.attribute-library .attribute-library-item {
+	background: #bbb;
+	cursor:pointer;
+	height:32px;
+	line-height:32px;
+	border-radius: 4px 4px 4px 4px;
+	margin-top:5px;
+	box-shadow: 1px 1px 1px #777777;
+}
+.attribute-library-item span{
+	height:32px;
+	width:32px;
+	display:block;
+}
+.attribute-library-itemfrom{
+	background: #EEEEEE;
+	height:32px;
+	line-height:32px;
+}
+.attribute-library-itemfrom span{
+	height:32px;
+	width:32px;
+	display:block;
+}
+.attribute-library-item:hover{
+	box-shadow: -1px -1px 1px #777777;
+}
+</style>
+	<div class="attribute-library">
+		<div class="attribute-library-itemfrom" label="表单">
+			<span style="float:left;background:url('/images/form-element.png') no-repeat scroll 0px 0px transparent;"></span>
+			<div style="float:left;font-weight:bold;">from表单元素</div>
+		</div>
+		<div class="attribute-library-item" attribute-type="text" label="输入框" >
+			<span style="float:left;margin-left:5px;background:url('/images/form-element.png') no-repeat scroll -32px 0px transparent;"></span>
+			<div style="float:left;margin-left:10px;">输入框</div>
+
+		</div>
+		<div class="attribute-library-item" attribute-type="select" label="单选按钮">
+			<span style="float:left;margin-left:5px;background:url(/images/form-element.png) no-repeat scroll -65px 0px transparent;"></span>
+			<div style="float:left;margin-left:10px;">单选框</div>
+		</div>
+		<div class="attribute-library-item" attribute-type="multi-checkbox" label="多选框">
+			<span style="float:left;margin-left:5px;background:url(/images/form-element.png) no-repeat scroll -128px 0px transparent;"></span>
+			<div style="float:left;margin-left:10px;">多选框</div>
+		</div>
+		<div class="attribute-library-item" attribute-type="menu" label="单选下拉框">
+			<span style="float:left;margin-left:5px;background:url(/images/form-element.png) no-repeat scroll -160px 0px transparent;"></span>
+			<div style="float:left;margin-left:10px;">下拉菜单框</div>
+		</div>
+		<div class="attribute-library-item" attribute-type="textarea" label="文本域">
+			<span style="float:left;margin-left:5px;background:url('/images/form-element.png') no-repeat scroll -96px 0px transparent;"></span>
+			<div style="float:left;margin-left:10px;">文本域</div>
+
+		</div>
+		<div class="attribute-library-item" attribute-type="button" label="提交按钮">
+			<span style="float:left;margin-left:5px;background:url('/images/form-element.png') no-repeat scroll 0px -34px transparent;"></span>
+			<div style="float:left;margin-left:10px;">提交按钮</div>
+		</div>
 	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='select'>
-		单选框
-	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='multi-checkbox'>
-		复选框
-	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='menu'>
-		菜单域
-	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='textarea'>
-		文本域
-	</div>
-	<div class='element-library-item drag-handle' draggable='true' element-type='button'>
-		按钮
-	</div>
-</div>
   <input type="hidden" id="formname" name="formname" value="<?php echo $this->formid;?>"/>
   <input type="hidden" id="orgcode" name="orgcode" value="<?php echo Class_Server::getOrgCode()?>"/>
 <div class='element-current' style='min-height: 350px;'>
@@ -63,9 +112,8 @@
 	?>
 	</ul>
 </div>
-<div class='clear'></div>
-<script type='text/javascript'>
 
+<script type='text/javascript'>
 $('.action-menu').click(function(){
 	var elementid = '';
 	$("li[id='form_element']").each(function(){
@@ -80,5 +128,22 @@ $('.action-menu').click(function(){
 		}
 	});
 	return false;
+});
+$('.attribute-library .attribute-library-item').click(function(){
+	var formid = $('#formname').val();
+	var type = $(this).attr('attribute-type');
+	var resp = $.ajax({
+		type: "POST",
+		url: '/'+<?php echo Class_Server::getOrgCode()?>+'/admin/form/get-element-template/type/' + type + '/id/' + formid + '/format/html',
+		success: function(html) {
+			if(resp.getResponseHeader('result') == 'success') {
+				//$('#add-element').html(html);
+				$(".element-dropable").eq(0).after(html);
+			} else {
+				alert('error');
+			}
+		}
+	});
+	//alert($(this).attr('attribute-type'));
 });
 </script>

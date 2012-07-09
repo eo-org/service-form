@@ -51,11 +51,11 @@ class Admin_IndexController extends Zend_Controller_Action
 			'hashParam' => $hashParam
 		));
         $this->view->partialHTML = $partialHTML;
-        $this->_helper->template->actionMenu(array('create'));
 	}
 
 	public function createAction()
 	{
+		$this->_helper->template->head('创建表单');
 		$orgCode = Class_Server::getOrgCode();
 		$formname = $this->getRequest()->getParam('formname');
 		$returnlanguage = $this->getRequest()->getParam('returnlanguage');

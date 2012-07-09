@@ -46,6 +46,7 @@ class Admin_FormController extends Zend_Controller_Action
 
 	public function editAction()
 	{
+		$this->_helper->template->head('表单下属元素修改');
 		$formid = $this->getRequest()->getParam('id');
 		$formCo = App_Factory::_m('Element');
 		$formDoc = $formCo->addFilter("formId", $formid)->sort('sort', 1)->fetchAll();
@@ -56,6 +57,7 @@ class Admin_FormController extends Zend_Controller_Action
 	
 	public function updateAction()
 	{
+		$this->_helper->template->head('表单基础信息修改');
 		$formid = $this->getRequest()->getParam('id');
 		$formCo = App_Factory::_m('Form');
 		$formDoc = $formCo->find($formid);
@@ -78,6 +80,7 @@ class Admin_FormController extends Zend_Controller_Action
 
 	public function getElementTemplateAction()
 	{
+
 		$type = $this->getRequest()->getParam('type');
 		$formid = $this->getRequest()->getParam('id');
 		$formCo = App_Factory::_m('Element');

@@ -5,7 +5,7 @@ class FeedbackController extends Zend_Controller_Action
 {
 	public function init()
     {
-        $this->_helper->viewRenderer->setNoRender(true);
+        
     }
 	
 	public function indexAction()
@@ -49,6 +49,7 @@ class FeedbackController extends Zend_Controller_Action
 	}
 	public function replyAction()
 	{
+		$this->_helper->viewRenderer->setNoRender(true);
 		$val = $this->getRequest()->getParams();
 		$arrin = array();
 		$http =  $_SERVER["HTTP_REFERER"];

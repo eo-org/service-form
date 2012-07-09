@@ -8,6 +8,7 @@ class Admin_ElementController extends Zend_Controller_Action
 
 	public function editAction()
 	{
+		$this->_helper->template->head('元素基础信息修改');
 		$elementId = $this->getRequest()->getParam('id');
 		$formCo = App_Factory::_m('Element');
 		$row = $formCo->find($elementId);

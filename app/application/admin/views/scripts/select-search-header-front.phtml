@@ -111,7 +111,7 @@ foreach($this->selectFields as $key => $value) {
         $optionsString.= $key.':{';
         $valuePair = array();
         foreach($value as $k => $v) {
-            $valuePair[] = $k.':\''.$v.'\'';
+            $valuePair[] = '\''.$k.'\':\''.$v.'\'';
         }
 //        if() {
 //        	$optionsString = substr($optionsString, 0, -1);
@@ -177,7 +177,7 @@ cm.appendItem(
 	}
 }
 ?>
-EventMessenger.bind("updateWithFilter", function(searchQuery) {
+EventMessenger.bind("updateAdminSearch", function(searchQuery) {
 	ajaxGrid.postAction(searchQuery);
 });
 
