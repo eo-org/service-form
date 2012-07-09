@@ -134,7 +134,7 @@ $('.attribute-library .attribute-library-item').click(function(){
 	var type = $(this).attr('attribute-type');
 	var resp = $.ajax({
 		type: "POST",
-		url: '/'+<?php echo Class_Server::getOrgCode()?>+'/admin/form/get-element-template/type/' + type + '/id/' + formid + '/format/html',
+		url: '/<?php echo Class_Server::getOrgCode();?>/admin/form/get-element-template/type/' + type + '/id/' + formid + '/format/html',
 		success: function(html) {
 			if(resp.getResponseHeader('result') == 'success') {
 				//$('#add-element').html(html);
