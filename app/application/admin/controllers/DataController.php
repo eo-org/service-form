@@ -61,6 +61,7 @@ class Admin_DataController extends Zend_Controller_Action
 			$arrup = $contentDoc->contentvalue;
 			$arrup['deal'] = $deal;
 			$contentDoc->contentvalue = $arrup;
+			$contentDoc->deal = $deal;
 			$contentDoc->save();
 		}
 		$this->view->formElementList = $contentDoc;
@@ -130,13 +131,14 @@ class Admin_DataController extends Zend_Controller_Action
 
         $ContentCo->setPage($currentPage)->setPageSize($pageSize);
 		$data = $ContentCo->fetchAll(true);
+// 		Zend_Debug::dump($data);exit;
 		$dataSize = $ContentCo->count();
-		$returndata = array();
-		foreach ($data as $m => $v){
-			if(!empty($v['contentvalue'])){
-				$returndata[$m] = array_merge($v['contentvalue'],array('id'=>$v['id']));
-			}
-		}
+// 		$returndata = array();
+// 		foreach ($data as $m => $v){
+// 			if(!empty($v['contentvalue'])){
+// 				$returndata[$m] = array_merge($v['contentvalue'],array('id'=>$v['id']));
+// 			}
+// 		}
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
         $result['pageSize'] = $pageSize;
