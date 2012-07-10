@@ -133,7 +133,7 @@ class Admin_DataController extends Zend_Controller_Action
 		$dataSize = $ContentCo->count();
 		$returndata = array();
 		foreach ($data as $m => $v){
-			if($v['contentvalue']){
+			if(!empty($v['contentvalue'])){
 				$returndata[$m] = array_merge($v['contentvalue'],array('id'=>$v['id']));
 			}
 		}
