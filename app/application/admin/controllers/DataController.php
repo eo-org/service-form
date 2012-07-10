@@ -133,10 +133,10 @@ class Admin_DataController extends Zend_Controller_Action
 		$dataSize = $ContentCo->count();
 		$returndata = array();
 		foreach ($data as $m => $v){
-			Zend_Debug::dump($v['contentvalue']);
-			$returndata[$m] = array_merge($v['contentvalue'],array('id'=>$v['id']));
+			if($v['contentvalue']){
+				$returndata[$m] = array_merge($v['contentvalue'],array('id'=>$v['id']));
+			}
 		}
-		Zend_Debug::dump($returndata);exit;
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
         $result['pageSize'] = $pageSize;
