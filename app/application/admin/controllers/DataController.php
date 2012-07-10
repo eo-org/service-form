@@ -106,7 +106,7 @@ class Admin_DataController extends Zend_Controller_Action
 
 	public function getFormJsonAction()
     {
-        $pageSize = 5;
+        $pageSize = 10;
         $currentPage = 1;
         $formid = $this->getRequest()->getParam('id');
         
@@ -133,11 +133,10 @@ class Admin_DataController extends Zend_Controller_Action
 		$dataSize = $ContentCo->count();
 		$returndata = array();
 		foreach ($data as $m => $v){
-// 			$returndata[$m] = $v['contentvalue'];
-			//array_push($returndata[$m],array('id'=>$v['id']));
+			Zend_Debug::dump($v['contentvalue']);
 			$returndata[$m] = array_merge($v['contentvalue'],array('id'=>$v['id']));
 		}
-// 		var_export($returndata);exit;
+		Zend_Debug::dump($returndata);exit;
 		$result['data'] = $data;
         $result['dataSize'] = $dataSize;
         $result['pageSize'] = $pageSize;
