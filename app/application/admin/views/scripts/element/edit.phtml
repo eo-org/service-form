@@ -67,26 +67,25 @@ $('#deloption').live("click",function(){
 $('#updateElementSetting').click(function(){
 	var checkvalue ='';
 	$("input[name='proving']:checked").each(function(i){        
-		var value = $(this).val();
-		//value = value.replace("/","\\");
-		checkvalue+= value + ':';		
+		var value = $(this).val().trim();
+		if(value != ''){
+			checkvalue+= value + ':';
+		}	
  	}); 
 	checkvalue = checkvalue == ''?0:checkvalue;
 	var attrValue="";
 	<?php if(!empty($row['option'])) { ?>
 		$("#addt :input:text").each(function(){
-			var value = $(this).attr("value");
-			//value = value.replace("/","\\");
-			attrValue+= value + ':';
+			var value = $(this).attr("value").trim();
+			if(value != ''){
+				attrValue+= value + ':';
+			}
 		});
 	<?php } else { ?>
 		attrValue = '0';
 	<?php }?>
 	var elementid = $('#elementid').val();
 	var label = $('#label').val();
-	//label = label.replace("\\","\\\\");
-//	alert(aa);.replace("/","&frasl;")
-	//alert(label);return false;
 	var desc = $('#desc').val();
 	var cssname = $('#cssname').val();
 	cssname = cssname == ''?0:cssname;

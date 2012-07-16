@@ -3,23 +3,31 @@
 </div>
 <div style='color:#f00'><?php echo $this->message; ?></div>
 <?php $row = $this->formElement->toArray();?>
-<div>
-	&nbsp;&nbsp;请填写表单名称：<input id='formname' name='formname' type='text' value="<?php echo $row['formName'];?>" />
-</div>
-<div>
-	&nbsp;&nbsp;请填写返回语：<textarea id='returnlanguage' name='returnlanguage' ><?php echo $row['returnlanguage'];?></textarea>
-</div>
-<div>
-	&nbsp;&nbsp;对提交数据的操作：<input id='addtable'type="button" value="添加" />
-	<div id='addt'>
-	<?php $i=0;if(!empty($row['deal'])){?>
+<div id='create' style='text-align: center;'>
+<table align="center" width='600px'>
+<tr>
+	<td width='200px' align='right'>请填写表单名称：</td>
+	<td align='left'><input id='formname' name='formname' type='text' value='<?php echo $row['formName'];?>' /></td>
+</tr>
+<tr>
+	<td align='right'>请填写返回语：</td>
+	<td align='left'><textarea id='returnlanguage' name='returnlanguage' ><?php echo $row['returnlanguage'];?></textarea></td>
+<tr>
+<tr>
+	<td align='right'>对提交数据的操作：</td><td align='left'><input id='addtable'type="button" value="添加" /></td>
+</tr>
+<tr>
+	<td colspan="2" align='center'><div id='addt'>
+		<?php $i=0;if(!empty($row['deal'])){?>
 		<?php foreach($row['deal'] as $num => $option){?>
-			<div id='<?php echo 's'.$i;?>' style="text-align:left;">
+			<div id='<?php echo 's'.$i;?>'>
 				<span><input type="text" id='<?php echo 's'.$i;?>' value="<?php echo $option;?>" name='<?php echo 's'.$i;?>' /></span>
 				<span><input id='deloption' type='button' value='删除' did='<?php echo 's'.$i;?>'></span>
 			</div>
 	<?php $i++;}}?>
-	</div>
+	</div></td>
+</tr>
+</table>
 </div>
 <script type="text/javascript">
 var i=50;
@@ -35,8 +43,10 @@ $('#deloption').live("click",function(){
 $('#updateElementSetting').click(function(){
 	var attrValue="";
 	$("#addt :input:text").each(function(){
-		var value = $(this).attr("value");
-		attrValue+= value + ':';
+		var value = $(this).attr("value").trim();
+		if(value != ''){
+			attrValue+= value + ':';
+		}
 	});
 	var formname = $('#formname').val();
 	var returnlanguage = $('#returnlanguage').val();

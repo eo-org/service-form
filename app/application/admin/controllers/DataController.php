@@ -122,9 +122,9 @@ class Admin_DataController extends Zend_Controller_Action
                    	$ContentCo->addFilter($field, new MongoRegex("/^".$value."/"));
                 } else {
             		if(intval($value) != 0) {
-            			$currentPage = $value;
-            		}
-                    $result['currentPage'] = intval($value);
+    						$currentPage = $value;
+    					}
+    				$result['currentPage'] = intval($value);
                 }
             }
         }
