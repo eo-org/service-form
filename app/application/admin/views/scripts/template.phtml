@@ -1,12 +1,10 @@
 <?php
 $naviArr = array(
 				array(
-					'orgCode' => Class_Server::getOrgCode(),
-					'moduleName' => 'admin/index/',
+					'url' => '/'.Class_Server::getOrgCode().'/admin/index/',
 					'title' => '表单管理'),
 				array(
-					'orgCode' => Class_Server::getOrgCode(),
-					'moduleName' => 'admin/index/create',
+					'url' => '/'.Class_Server::getOrgCode().'/admin/index/create',
 					'title' => '表单创建'),
 );
 
